@@ -1,10 +1,16 @@
 import React from 'react';
-import { Link } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
 import logoImage from '../../assets/logo.png';
 import './Navbar.css';
 
 function Navbar() {
-  
+  const navigate = useNavigate();
+  const token = localStorage.getItem('token');
+
+  const handleLogout = () => {
+    localStorage.removeItem('token');
+    navigate('/login');
+  };
 
   return (
     <nav className="navbar bg-dgrn rounded">
@@ -22,12 +28,25 @@ function Navbar() {
         </ul>
       </div>
       <div className="navbar-right">
-      <Link to="/signup">
+        {!token ? (
+          <>
+            <Link to="/signup">
               <button className="sign-up-btn clr-lgrn mr-2.5 font-bold text-md w-28 nuni">Sign Up</button>
             </Link>
             <Link to="/login">
               <button className="log-in-btn px-3 py-1 rounded text-md w-28 bg-lgrn clr-dgrn font-bold nuni">Log In</button>
             </Link>
+          </>
+        ) : (
+          <Link to="/logout">
+          <button 
+            onClick={handleLogout} 
+            className="log-out-btn px-3 py-1 rounded text-md w-28 bg-lgrn clr-dgrn font-bold nuni"
+          >
+            Log Out
+          </button>
+          </Link>
+        )}
       </div>
     </nav>
   );
