@@ -9,6 +9,7 @@ import Login from './components/authentication/Login/Login';
 import ProcessS from './pages/ProcessS/ProcessS';
 import Adopt from './pages/Adopt/Adopt';
 import PetDetails from './pages/PetDetails/PetDetails';
+import AdForm from './pages/Forms/AdForm';
 
 function App() {
   return (
@@ -26,6 +27,7 @@ function App() {
         <Route path="/process" element={<ProcessS />} />
         <Route path="/adopt" element={<Adopt />} />
         <Route path="/adopt/:id" element={<PetDetails />} />
+        <Route path="/adform/:id" element={<AdForm />}></Route>
       </Routes>
     </Router>
   );

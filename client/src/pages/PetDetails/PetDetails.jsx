@@ -1,11 +1,13 @@
 import React, { useState, useEffect } from 'react';
-import { useParams } from 'react-router-dom';
+import { useParams, useNavigate } from 'react-router-dom'; 
 import Navbar from '../../components/Navbar/Navbar';
 import './PetDetails.css';
+
 
 function PetDetails() {
   const { id } = useParams();
   const [pet, setPet] = useState(null);
+  const navigate = useNavigate();
 
   useEffect(() => {
     const fetchPetDetails = async () => {
@@ -27,7 +29,9 @@ function PetDetails() {
   if (!pet) {
     return <div>Loading...</div>;
   }
-
+  const handleAdopt = () => {
+    navigate(`/adform/${id}`);
+  };
   return (
     <div className="pet-details-page">
       <Navbar />
@@ -67,7 +71,7 @@ function PetDetails() {
               ))
             }
           </div>
-          <a href="#" className="adopt-button-large">Adopt {pet.name}</a>
+          <button  className="adopt-button-large" onClick={handleAdopt}>Adopt {pet.name}</button>
         </div>
       </div>
     </div>
