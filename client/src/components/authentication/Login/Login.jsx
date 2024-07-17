@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import { Link } from 'react-router-dom';
-import './Login.css'
+import './Login.css';
 
 function Login() {
   const [formData, setFormData] = useState({
@@ -37,7 +37,11 @@ function Login() {
         localStorage.setItem('token', data.token);
         console.log('Login successful');
         alert('Login successful');
-        window.location.href = '/';
+        if (formData.email.endsWith('@ngo.com')) {
+          window.location.href = '/homengo';
+        } else {
+          window.location.href = '/';
+        }
       } else {
         console.error('Login failed');
         alert('Login failed. Please check your credentials.');

@@ -11,7 +11,7 @@ import ProcessS from './pages/ProcessS/ProcessS';
 import Adopt from './pages/Adopt/Adopt';
 import PetDetails from './pages/PetDetails/PetDetails';
 import AdForm from './pages/Forms/AdForm';
-import HeaderNGO from './components/HeaderNGO/HeaderNGO';
+import HomeNGO from './pages/HomeNGO/HomeNGO';
 
 function App() {
   return (
@@ -31,7 +31,7 @@ function App() {
         <Route path="/adopt" element={<Adopt />} />
         <Route path="/adopt/:id" element={<PetDetails />} />
         <Route path="/adform/:id" element={<AdForm />}></Route>
-        <Route path="/ngo" element={<HeaderNGO/>}></Route>
+        <Route path="/homengo" element={<HomeNGO/>}></Route>
       </Routes>
     </Router>
   );

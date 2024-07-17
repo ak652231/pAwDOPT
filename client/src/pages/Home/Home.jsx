@@ -19,7 +19,6 @@ function Home() {
       <Testimonials />
       <Help />
       <Footer />
-      <HeaderNGO/>
     </div>
   );
 }

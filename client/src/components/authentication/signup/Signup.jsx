@@ -24,6 +24,12 @@ function Signup() {
     e.preventDefault();
     setSubmitting(true);
 
+    if (formData.role === 'ngo_worker' && !formData.email.endsWith('@ngo.com')) {
+      alert('You are not NGO worker,contact NGO Admin!');
+      setSubmitting(false);
+      return;
+    }
+
     const url = 'http://localhost:5000/api/auth/signup';
 
     try {
