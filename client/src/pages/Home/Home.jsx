@@ -6,6 +6,7 @@ import Why from '../../components/Why/Why';
 import Testimonials from '../../components/Testimonials/Testimonials';
 import Help from '../../components/Help/Help';
 import Footer from '../../components/Footer/Footer';
+import HeaderNGO from '../../components/HeaderNGO/HeaderNGO';
 
 function Home() {
   return (
@@ -18,6 +19,7 @@ function Home() {
       <Testimonials />
       <Help />
       <Footer />
+      <HeaderNGO/>
     </div>
   );
 }
