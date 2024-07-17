@@ -1,0 +1,98 @@
+.adoption-requests-page {
+    background-color: var(--color-light-green);
+    min-height: 100vh;
+    padding: 1.25rem;
+  }
+  
+  .adoption-requests-content {
+    max-width: 75rem;
+    margin: 0 auto;
+    padding: 1.25rem;
+  }
+  
+  .page-title {
+    font-size: 3rem;
+    color: var(--color-dark-green);
+    text-align: center;
+    margin-bottom: 2rem;
+    font-weight: 700;
+    font-family: 'Nunito', sans-serif;
+  }
+  
+  .requests-list {
+    display: flex;
+    flex-direction: column;
+    gap: 2rem;
+  }
+  
+  .request-card {
+    display: flex;
+    background-color: white;
+    border-radius: 1rem;
+    overflow: hidden;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+    transition: transform 0.3s ease;
+  }
+  
+  .request-card:hover {
+    transform: translateY(-5px);
+  }
+  
+  .request-info {
+    flex: 1;
+    padding: 1.5rem;
+  }
+  
+  .pet-name {
+    font-size: 1.8rem;
+    color: var(--color-dark-green);
+    margin-bottom: 0.5rem;
+    font-family: 'Nunito', sans-serif;
+    font-weight: 700;
+  }
+  
+  .pet-details, .requester-name {
+    font-size: 1.1rem;
+    color: #666;
+    margin-bottom: 0.5rem;
+    font-family: 'Nunito', sans-serif;
+  }
+  
+  .view-details-button {
+    padding: 0.75rem 1.5rem;
+    font-size: 1rem;
+    background-color: var(--color-dark-green);
+    color: white;
+    border: none;
+    border-radius: 0.5rem;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+    font-family: 'Nunito', sans-serif;
+    font-weight: 600;
+    margin-top: 1rem;
+  }
+  
+  .view-details-button:hover {
+    background-color: var(--color-mid-green);
+  }
+  
+  .pet-image {
+    width: 40%;
+  }
+  
+  .pet-image img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+  }
+  
+  @media (max-width: 47.9375rem) {
+    .request-card {
+      flex-direction: column;
+    }
+  
+    .pet-image {
+      width: 100%;
+      height: 200px;
+    }
+  }

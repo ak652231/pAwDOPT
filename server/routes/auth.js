@@ -4,6 +4,7 @@ const { check, validationResult } = require('express-validator');
 const authController = require('../controllers/authController');
 
 router.post('/signup', authController.signUp);
+router.get('/:id', authController.getUserById);
 
 router.post(
   '/login',

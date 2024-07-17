@@ -12,6 +12,8 @@ import Adopt from './pages/Adopt/Adopt';
 import PetDetails from './pages/PetDetails/PetDetails';
 import AdForm from './pages/Forms/AdForm';
 import HomeNGO from './pages/HomeNGO/HomeNGO';
+import AdoptionRequests from './components/AdoptionRequests/AdoptionRequests';
+import AdoptionRequestDetails from './components/AdoptionRequestDetails/AdoptionRequestDetails';
 
 function App() {
   return (
@@ -32,6 +34,8 @@ function App() {
         <Route path="/adopt/:id" element={<PetDetails />} />
         <Route path="/adform/:id" element={<AdForm />}></Route>
         <Route path="/homengo" element={<HomeNGO/>}></Route>
+        <Route path="/adoption-requests" element={<AdoptionRequests/>}></Route>
+        <Route path="/adoption-requests/:id" element={<AdoptionRequestDetails/>}></Route>
       </Routes>
     </Router>
   );
