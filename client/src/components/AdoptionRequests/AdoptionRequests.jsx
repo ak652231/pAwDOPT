@@ -11,29 +11,37 @@ function AdoptionRequests() {
     fetchAdoptionRequests();
   }, []);
 
+
   const fetchAdoptionRequests = async () => {
     try {
       const response = await fetch('http://localhost:5000/api/forms/getAdoptionData');
-      if (!response.ok) {
+      const token = localStorage.getItem('token'); 
+      if (!token) {
+        window.location.href = '/';
         throw new Error('Failed to fetch adoption requests');
       }
       const requestsData = await response.json();
-      
       const detailedRequests = await Promise.all(requestsData.map(async (request) => {
-        const petResponse = await fetch(`http://localhost:5000/api/pets/${request.petId}`);
-        const userResponse = await fetch(`http://localhost:5000/api/auth/${request.userId}`);
-        
-        const pet = await petResponse.json();
-        const user = await userResponse.json();
-        
-        return { ...request, pet, user };
+        if (!request.rejected) {
+          const petResponse = await fetch(`http://localhost:5000/api/pets/${request.petId}`);
+          const userResponse = await fetch(`http://localhost:5000/api/auth/${request.userId}`);
+          
+          const pet = await petResponse.json();
+          const user = await userResponse.json();
+          
+          return { ...request, pet, user };
+        }
+        return null;
       }));
+  
+      const filteredRequests = detailedRequests.filter(request => request !== null);
       
-      setAdoptionRequests(detailedRequests);
+      setAdoptionRequests(filteredRequests);
     } catch (error) {
       console.error('Error fetching adoption requests:', error);
     }
   };
+  
 
   const handleViewDetails = (requestId) => {
     navigate(`/adoption-requests/${requestId}`);

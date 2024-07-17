@@ -15,10 +15,18 @@ function AdoptionRequestDetails() {
 
   const fetchRequestDetails = async () => {
     try {
-      const response = await fetch(`http://localhost:5000/api/forms/${id}`);
-      if (!response.ok) {
+      const token = localStorage.getItem('token'); 
+      if (!token) {
+        window.location.href = '/';
         throw new Error('Failed to fetch request details');
       }
+
+      const response = await fetch(`http://localhost:5000/api/forms/${id}`, {
+        headers: {
+          'Authorization': `Bearer ${token}`
+        }
+      });
+      
       const data = await response.json();
       
       const petResponse = await fetch(`http://localhost:5000/api/pets/${data.petId}`);
@@ -33,6 +41,65 @@ function AdoptionRequestDetails() {
     }
   };
 
+  const handleApprove = async () => {
+    try {
+      const token = localStorage.getItem('token');
+      if (!token) {
+        window.location.href = '/';
+        throw new Error('Authorization token is missing');
+      }
+
+      const response = await fetch(`http://localhost:5000/api/forms/approve/ngo/${id}`, {
+        method: 'PATCH',
+        headers: {
+          'Content-Type': 'application/json',
+          'Authorization': `Bearer ${token}`
+        }
+      });
+
+      if (response.ok) {
+        alert('Adoption request approved by NGO worker');
+        fetchRequestDetails();
+      } else {
+        console.error('Failed to approve adoption request');
+        alert('Failed to approve adoption request');
+      }
+    } catch (error) {
+      console.error('Error approving request:', error);
+      alert('An error occurred while approving the request');
+    }
+  };
+
+  const handleReject = async () => {
+    try {
+      const token = localStorage.getItem('token');
+      if (!token) {
+        window.location.href = '/';
+        throw new Error('Authorization token is missing');
+      }
+
+      const response = await fetch(`http://localhost:5000/api/forms/reject/${id}`, {
+        method: 'PATCH',
+        headers: {
+          'Content-Type': 'application/json',
+          'Authorization': `Bearer ${token}`
+        }
+      });
+
+      if (response.ok) {
+        alert('Adoption request rejected');
+        window.location.href = '/adoption-requests';
+        fetchRequestDetails();
+      } else {
+        console.error('Failed to reject adoption request');
+        alert('Failed to reject adoption request');
+      }
+    } catch (error) {
+      console.error('Error rejecting request:', error);
+      alert('An error occurred while rejecting the request');
+    }
+  };
+
   if (!requestDetails) {
     return <div className="loading">Loading...</div>;
   }
@@ -40,7 +107,7 @@ function AdoptionRequestDetails() {
   const { pet, user, ...formAnswers } = requestDetails;
 
   const displayFields = Object.entries(formAnswers).filter(([key]) => 
-    !['_id', '__v', 'petId', 'userId'].includes(key)
+    !['_id', '__v', 'petId', 'userId', 'ngoWorkerApproved', 'adminApproved', 'rejected'].includes(key)
   );
 
   return (
@@ -69,6 +136,7 @@ function AdoptionRequestDetails() {
           <h2>Requester Details</h2>
           <p><strong>Name:</strong> {user.name}</p>
           <p><strong>Email:</strong> {user.email}</p>
+          <p><strong>Number:</strong> {user.number}</p>
         </section>
 
         <section className="questionnaire">
@@ -83,8 +151,8 @@ function AdoptionRequestDetails() {
           </div>
         </section>
         <div className="action-buttons">
-          <button className="approve-btn" >Approve</button>
-          <button className="reject-btn" >Reject</button>
+          <button className="approve-btn" onClick={handleApprove}>Approve</button>
+          <button className="reject-btn" onClick={handleReject}>Reject</button>
         </div>
       </div>
     </div>

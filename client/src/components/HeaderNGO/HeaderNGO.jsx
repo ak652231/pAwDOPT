@@ -13,21 +13,21 @@ function HeaderNGO() {
           <div className="dashboard-card">
             <h2 className="card-title">Adoption Requests</h2>
             <p className="card-description">Review and manage adoption applications</p>
-            <Link to="/ngo/adoption-requests">
+            <Link to="/adoption-requests">
               <button className="card-button">View Requests</button>
             </Link>
           </div>
           <div className="dashboard-card">
             <h2 className="card-title">Volunteer Requests</h2>
             <p className="card-description">Manage volunteer applications and schedules</p>
-            <Link to="/ngo/volunteer-requests">
+            <Link to="/volunteer-requests">
               <button className="card-button">View Requests</button>
             </Link>
           </div>
           <div className="dashboard-card">
             <h2 className="card-title">Manage Pets</h2>
             <p className="card-description">Add, update, or remove pets from the database</p>
-            <Link to="/ngo/manage-pets">
+            <Link to="/manage-pets">
               <button className="card-button">Manage Pets</button>
             </Link>
           </div>
