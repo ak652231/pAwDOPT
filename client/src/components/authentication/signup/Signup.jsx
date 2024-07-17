@@ -10,7 +10,7 @@ function Signup() {
     address: '',
     age: '',
     gender: '',
-    role: 'adopter',
+    role: '',
     password: '',
   });
   const [submitting, setSubmitting] = useState(false);
@@ -129,6 +129,20 @@ function Signup() {
                 <option value="other">Other</option>
               </select>
             </div>
+          </div>
+          <div className="form-group">
+            <label htmlFor="role">Role</label>
+            <select
+              id="role"
+              name="role"
+              value={formData.role}
+              onChange={handleInputChange}
+              required
+            >
+              <option value="">Select role</option>
+              <option value="adopter">Adopter</option>
+              <option value="ngo_worker">NGO Worker</option>
+            </select>
           </div>
           <div className="form-group">
             <label htmlFor="password">Password</label>
