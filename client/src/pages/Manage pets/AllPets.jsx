@@ -48,7 +48,7 @@ function AllPets() {
   );
 
   const handleViewDetails = (id) => {
-    navigate(`/ngo/adopt/${id}`);
+    navigate(`/adopt/${id}`);
   };
 
   const handleEditPet = (id) => {

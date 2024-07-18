@@ -58,22 +58,21 @@ function EditPets() {
   const handleSubmit = async (e) => {
     e.preventDefault();
     try {
-      const formData = new FormData();
-      Object.keys(pet).forEach(key => {
-        if (key !== 'photos') {
-          formData.append(key, pet[key]);
-        }
-      });
-      if (newPhoto) {
-        formData.append('photo', newPhoto);
-      }
-      const token=localStorage.getItem('token');
+      const token = localStorage.getItem('token');
       const response = await fetch(`http://localhost:5000/api/pets/${id}`, {
         method: 'PUT',
         headers: {
-            'x-auth-token': token
-          },
-        body: formData,
+          'Content-Type': 'application/json',
+          'x-auth-token': token
+        },
+        body: JSON.stringify({
+          name: pet.name,
+          type: pet.type,
+          breed: pet.breed,
+          age: pet.age,
+          healthInfo: pet.healthInfo,
+          compatibility: pet.compatibility
+        }),
       });
       if (!response.ok) {
         throw new Error('Failed to update pet details');
@@ -83,6 +82,7 @@ function EditPets() {
       console.error('Error updating pet details:', error);
     }
   };
+  
   return (
     <div className="edit-pet-page">
       <Navbar />

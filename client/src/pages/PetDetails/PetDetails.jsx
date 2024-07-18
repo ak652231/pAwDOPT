@@ -1,13 +1,34 @@
 import React, { useState, useEffect } from 'react';
 import { useParams, useNavigate } from 'react-router-dom'; 
 import Navbar from '../../components/Navbar/Navbar';
+import { jwtDecode } from "jwt-decode";
 import './PetDetails.css';
-
 
 function PetDetails() {
   const { id } = useParams();
   const [pet, setPet] = useState(null);
   const navigate = useNavigate();
+  const [isNGOWorker, setIsNGOWorker] = useState(false);
+
+  useEffect(() => {
+    const token = localStorage.getItem('token');
+    if (token) {
+      const decodedToken = jwtDecode(token);
+      console.log('Decoded token:', decodedToken);
+
+      const user = decodedToken.user;
+      console.log('User object:', user);
+      
+      if (user && user.email && user.role) {
+        console.log('Email:', user.email);
+        console.log('Role:', user.role);
+        
+        if (user.email.endsWith('@ngo.com') || user.role === 'ngo_worker') {
+          setIsNGOWorker(true);
+        }
+      }
+    }
+  }, []);
 
   useEffect(() => {
     const fetchPetDetails = async () => {
@@ -29,9 +50,11 @@ function PetDetails() {
   if (!pet) {
     return <div>Loading...</div>;
   }
+
   const handleAdopt = () => {
     navigate(`/adform/${id}`);
   };
+
   return (
     <div className="pet-details-page">
       <Navbar />
@@ -56,7 +79,6 @@ function PetDetails() {
               <strong>Age</strong>
               <p>{pet.age} years</p>
             </div>
-            
           </div>
           <div className="pet-description">
             <h2>Health Information</h2>
@@ -71,7 +93,11 @@ function PetDetails() {
               ))
             }
           </div>
-          <button  className="adopt-button-large" onClick={handleAdopt}>Adopt {pet.name}</button>
+          {!isNGOWorker && (
+            <button className="adopt-button-large" onClick={handleAdopt}>
+              Adopt {pet.name}
+            </button>
+          )}
         </div>
       </div>
     </div>

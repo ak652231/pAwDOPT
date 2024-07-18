@@ -31,6 +31,8 @@ exports.signUp = async (req, res) => {
     const payload = {
       user: {
         id: user.id,
+        email: user.email,
+        role: user.role,
       },
     };
 
@@ -53,7 +55,6 @@ exports.login = async (req, res) => {
   const { email, password } = req.body;
 
   try {
-
     let user = await User.findOne({ email });
     if (!user) {
       return res.status(400).json({ msg: 'Invalid Credentials' });
@@ -67,6 +68,8 @@ exports.login = async (req, res) => {
     const payload = {
       user: {
         id: user.id,
+        email: user.email,
+        role: user.role,
       },
     };
 
