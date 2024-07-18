@@ -51,17 +51,18 @@ exports.getPetById = async (req, res) => {
 };
 
 exports.updatePet = async (req, res) => {
-  const { type, name, breed, age, photos, healthInfo, compatibility } = req.body;
+  console.log("Received update data:", req.body);
+  const { type, name, breed, age, healthInfo, compatibility } = req.body;
 
-  const petFields = { type, name, breed, age, photos, healthInfo, compatibility };
+  const petFields = { type, name, breed, age, healthInfo, compatibility };
 
   try {
+    console.log("Received update data:", req.body);
     let pet = await Pet.findById(req.params.id);
 
     if (!pet) {
       return res.status(404).json({ msg: 'Pet not found' });
     }
-
     pet = await Pet.findByIdAndUpdate(
       req.params.id,
       { $set: petFields },
@@ -74,7 +75,6 @@ exports.updatePet = async (req, res) => {
     res.status(500).send('Server error');
   }
 };
-
 exports.deletePet = async (req, res) => {
   try {
     const pet = await Pet.findById(req.params.id);

@@ -21,7 +21,7 @@ function NavbarNGO() {
           <li><Link className="font-medium text-md clr-lgrn nuni" to="/ngo/dashboard">Dashboard</Link></li>
           <li><Link className="font-medium text-md clr-lgrn nuni" to="/adoption-requests">Adoption Requests</Link></li>
           <li><Link className="font-medium text-md clr-lgrn nuni" to="/ngo/volunteer-requests">Volunteer Requests</Link></li>
-          <li><Link className="font-medium text-md clr-lgrn nuni" to="/ngo/manage-pets">Manage Pets</Link></li>
+          <li><Link className="font-medium text-md clr-lgrn nuni" to="/manage-pets">Manage Pets</Link></li>
         </ul>
       </div>
       <div className="navbar-right">

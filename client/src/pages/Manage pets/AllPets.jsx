@@ -1,13 +1,14 @@
 import React, { useState, useEffect } from 'react';
-import { Link, useNavigate } from 'react-router-dom';
-import Navbar from '../../components/Navbar/Navbar';
-import './Adopt.css';
+import { useNavigate } from 'react-router-dom';
+import Navbar from '../../components/NavbarNGO/NavbarNGO';
+import './AllPets.css';
 
-function Adopt() {
+function AllPets() {
   const [pets, setPets] = useState([]);
   const [selectedType, setSelectedType] = useState('All');
   const [selectedBreed, setSelectedBreed] = useState('All');
   const [availableBreeds, setAvailableBreeds] = useState([]);
+  const [activeDropdown, setActiveDropdown] = useState(null);
   const navigate = useNavigate();
 
   useEffect(() => {
@@ -26,7 +27,6 @@ function Adopt() {
       console.error('Error fetching pets:', error);
     }
   };
-
 
   const animalTypes = ['All', ...new Set(pets.map(pet => pet.type))];
 
@@ -47,15 +47,46 @@ function Adopt() {
     (selectedBreed === 'All' || pet.breed === selectedBreed)
   );
 
-  const handleLearnMoreClick = (id) => {
-    navigate(`/adopt/${id}`);
+  const handleViewDetails = (id) => {
+    navigate(`/ngo/adopt/${id}`);
+  };
+
+  const handleEditPet = (id) => {
+    navigate(`/manage-pets/edit/${id}`);
+  };
+
+  const handleDeletePet = async (id) => {
+    try {
+        const token= localStorage.getItem('token');
+      const response = await fetch(`http://localhost:5000/api/pets/${id}`, {
+        method: 'DELETE',
+        headers: {
+          'Content-Type': 'application/json',
+          'x-auth-token':token
+        },
+      });
+  
+      if (!response.ok) {
+        throw new Error('Failed to delete pet');
+      }
+  
+      setPets(prevPets => prevPets.filter(pet => pet._id !== id));
+      console.log(`Pet with id: ${id} deleted successfully`);
+    } catch (error) {
+      console.error('Error deleting pet:', error);
+    }
+  };
+  
+
+  const toggleDropdown = (id) => {
+    setActiveDropdown(activeDropdown === id ? null : id);
   };
 
   return (
     <div className="adoption-page">
       <Navbar />
       <div className="adoption-content">
-        <h1 className="page-title">Adopt a Pet</h1>
+        <h1 className="page-title">Manage Adoptable Pets</h1>
         
         <div className="filter-section">
           <div className="filter-group">
@@ -94,14 +125,23 @@ function Adopt() {
                 <h2 className="pet-name">{pet.name}</h2>
                 <p className="pet-breed">{pet.type} - {pet.breed}</p>
                 <p className="pet-age">Age: {pet.age} years</p>
-                <button className="adopt-button" onClick={() => handleLearnMoreClick(pet._id)}>
-                  Learn More
+                <button className="adopt-button" onClick={() => handleViewDetails(pet._id)}>
+                  View Details
                 </button>
               </div>
               <div className="pet-image">
                 {pet.photos && pet.photos.length > 0 && (
                   <img src={pet.photos[0]} alt={pet.name} />
                 )}
+                <div className="pet-actions">
+                  <button className="action-button" onClick={() => toggleDropdown(pet._id)}>⋮</button>
+                  {activeDropdown === pet._id && (
+                    <div className="action-dropdown">
+                      <button onClick={() => handleEditPet(pet._id)}>Edit Pet Details</button>
+                      <button onClick={() => handleDeletePet(pet._id)}>Delete This Pet</button>
+                    </div>
+                  )}
+                </div>
               </div>
             </div>
           ))}
@@ -111,4 +151,4 @@ function Adopt() {
   );
 }
 
-export default Adopt;
+export default AllPets;

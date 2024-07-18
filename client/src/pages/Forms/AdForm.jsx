@@ -60,7 +60,7 @@ function AdForm() {
       navigate('/');
     } catch (error) {
       console.error('Error submitting form:', error);
-      alert('Failed to submit form. Please try again.');
+      alert('Please Login before raising adoption request.');
     }
   };
 
