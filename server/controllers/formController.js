@@ -33,3 +33,58 @@ exports.getAdoptionFormById= async (req,res)=>{
     res.status(500).send('Server error');
   }
 }
+
+exports.approveByNGOWorker = async (req, res) => {
+  try {
+    const adoptionForm = await AdoptionForm.findById(req.params.id);
+
+    if (!adoptionForm) {
+      return res.status(404).json({ message: 'Adoption form not found' });
+    }
+
+    adoptionForm.ngoWorkerApproved = true;
+    await adoptionForm.save();
+
+    res.status(200).json({ message: 'Adoption form approved by NGO worker' });
+  } catch (error) {
+    res.status(500).json({ message: 'Server error', error });
+  }
+};
+
+exports.approveByAdmin = async (req, res) => {
+  try {
+    const adoptionForm = await AdoptionForm.findById(req.params.id);
+
+    if (!adoptionForm) {
+      return res.status(404).json({ message: 'Adoption form not found' });
+    }
+
+    if (!adoptionForm.ngoWorkerApproved) {
+      return res.status(400).json({ message: 'Form must be approved by NGO worker first' });
+    }
+
+    adoptionForm.adminApproved = true;
+    await adoptionForm.save();
+
+    res.status(200).json({ message: 'Adoption form approved by Admin' });
+  } catch (error) {
+    res.status(500).json({ message: 'Server error', error });
+  }
+};
+
+exports.rejectAdoptionForm = async (req, res) => {
+  try {
+    const adoptionForm = await AdoptionForm.findById(req.params.id);
+
+    if (!adoptionForm) {
+      return res.status(404).json({ message: 'Adoption form not found' });
+    }
+
+    adoptionForm.rejected = true;
+    await adoptionForm.save();
+
+    res.status(200).json({ message: 'Adoption form rejected' });
+  } catch (error) {
+    res.status(500).json({ message: 'Server error', error });
+  }
+};

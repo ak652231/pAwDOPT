@@ -18,9 +18,9 @@ function NavbarNGO() {
       </div>
       <div className="navbar-center">
         <ul className="nav-links">
-          <li><Link className="font-medium text-md clr-lgrn nuni" to="/ngo/dashboard">Dashboard</Link></li>
+          <li><Link className="font-medium text-md clr-lgrn nuni" to="/homengo">Dashboard</Link></li>
           <li><Link className="font-medium text-md clr-lgrn nuni" to="/adoption-requests">Adoption Requests</Link></li>
-          <li><Link className="font-medium text-md clr-lgrn nuni" to="/ngo/volunteer-requests">Volunteer Requests</Link></li>
+          <li><Link className="font-medium text-md clr-lgrn nuni" to="/volunteer-requests">Volunteer Requests</Link></li>
           <li><Link className="font-medium text-md clr-lgrn nuni" to="/manage-pets">Manage Pets</Link></li>
         </ul>
       </div>

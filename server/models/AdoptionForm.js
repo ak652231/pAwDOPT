@@ -15,6 +15,9 @@ const AdoptionFormSchema = new Schema({
   homeSpace: { type: String, required: true },
   financialPreparation: { type: String, required: true },
   lifetimeCommitment: { type: String, required: true },
+  ngoWorkerApproved: { type: Boolean, default: false },
+  adminApproved: { type: Boolean, default: false },
+  rejected: { type: Boolean, default: false },
 });
 
-module.exports=mongoose.model('AdoptionForm', AdoptionFormSchema);
+module.exports = mongoose.model('AdoptionForm', AdoptionFormSchema);
