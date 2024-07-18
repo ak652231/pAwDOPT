@@ -26,16 +26,9 @@ function AdoptionRequestDetails() {
           'Authorization': `Bearer ${token}`
         }
       });
-      
+
       const data = await response.json();
-      
-      const petResponse = await fetch(`http://localhost:5000/api/pets/${data.petId}`);
-      const userResponse = await fetch(`http://localhost:5000/api/auth/${data.userId}`);
-      
-      const pet = await petResponse.json();
-      const user = await userResponse.json();
-      
-      setRequestDetails({ ...data, pet, user });
+      setRequestDetails(data);
     } catch (error) {
       console.error('Error fetching request details:', error);
     }
@@ -104,7 +97,7 @@ function AdoptionRequestDetails() {
     return <div className="loading">Loading...</div>;
   }
 
-  const { pet, user, ...formAnswers } = requestDetails;
+  const { petId: pet, userId: user, ...formAnswers } = requestDetails;
 
   const displayFields = Object.entries(formAnswers).filter(([key]) => 
     !['_id', '__v', 'petId', 'userId', 'ngoWorkerApproved', 'adminApproved', 'rejected'].includes(key)

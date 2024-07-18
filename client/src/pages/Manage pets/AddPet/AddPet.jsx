@@ -1,10 +1,9 @@
-import React, { useState, useEffect } from 'react';
-import { useParams, useNavigate } from 'react-router-dom';
-import Navbar from '../../components/NavbarNGO/NavbarNGO';
-import './EditPets.css';
+import React, { useState } from 'react';
+import { useNavigate } from 'react-router-dom';
+import Navbar from '../../../components/NavbarNGO/NavbarNGO';
+import './AddPet.css';
 
-function EditPets() {
-  const { id } = useParams();
+function AddPet() {
   const navigate = useNavigate();
   const [pet, setPet] = useState({
     name: '',
@@ -13,27 +12,9 @@ function EditPets() {
     age: '',
     healthInfo: '',
     compatibility: '',
-    photos: []
   });
-  const [newPhoto, setNewPhoto] = useState(null);
+  const [photo, setPhoto] = useState(null);
   const [previewUrl, setPreviewUrl] = useState('');
-
-  useEffect(() => {
-    fetchPetDetails();
-  }, [id]);
-
-  const fetchPetDetails = async () => {
-    try {
-      const response = await fetch(`http://localhost:5000/api/pets/${id}`);
-      if (!response.ok) {
-        throw new Error('Failed to fetch pet details');
-      }
-      const petData = await response.json();
-      setPet(petData);
-    } catch (error) {
-      console.error('Error fetching pet details:', error);
-    }
-  };
 
   const handleInputChange = (e) => {
     const { name, value } = e.target;
@@ -46,7 +27,7 @@ function EditPets() {
   const handlePhotoChange = (e) => {
     const file = e.target.files[0];
     if (file) {
-      setNewPhoto(file);
+      setPhoto(file);
       const reader = new FileReader();
       reader.onloadend = () => {
         setPreviewUrl(reader.result);
@@ -59,36 +40,36 @@ function EditPets() {
     e.preventDefault();
     try {
       const token = localStorage.getItem('token');
-      const response = await fetch(`http://localhost:5000/api/pets/${id}`, {
-        method: 'PUT',
+      const formData = new FormData();
+      Object.keys(pet).forEach(key => formData.append(key, pet[key]));
+      if (photo) {
+        formData.append('photo', photo);
+      }
+
+      const response = await fetch('http://localhost:5000/api/pets/', {
+        method: 'POST',
         headers: {
-          'Content-Type': 'application/json',
           'x-auth-token': token
         },
-        body: JSON.stringify({
-          name: pet.name,
-          type: pet.type,
-          breed: pet.breed,
-          age: pet.age,
-          healthInfo: pet.healthInfo,
-          compatibility: pet.compatibility
-        }),
+        body: formData,
       });
+
       if (!response.ok) {
-        throw new Error('Failed to update pet details');
+        throw new Error('Failed to add new pet');
       }
-      navigate('/manage-pets'); 
+
+      navigate('/manage-pets');
     } catch (error) {
-      console.error('Error updating pet details:', error);
+      console.error('Error adding new pet:', error);
     }
   };
-  
+
   return (
-    <div className="edit-pet-page">
+    <div className="add-pet-page">
       <Navbar />
-      <div className="edit-pet-content">
-        <h1 className="page-title">Edit Pet Details</h1>
-        <form onSubmit={handleSubmit} className="edit-pet-form">
+      <div className="add-pet-content">
+        <h1 className="page-title">Add New Pet</h1>
+        <form onSubmit={handleSubmit} className="add-pet-form">
           <div className="form-group">
             <label htmlFor="name">Name:</label>
             <input
@@ -166,11 +147,11 @@ function EditPets() {
               />
             </div>
           </div>
-          <button type="submit" className="submit-button">Update Pet Details</button>
+          <button type="submit" className="submit-button">Add New Pet</button>
         </form>
       </div>
     </div>
   );
 }
 
-export default EditPets;
+export default AddPet;

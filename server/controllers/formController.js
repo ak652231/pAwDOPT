@@ -15,18 +15,22 @@ exports.saveAdoptionForm = async (req, res) => {
   }
 };
 
-exports.getAdoptionData= async (req,res)=>{
-  try{
-    const Forms=await AdoptionForm.find({});
-    res.json(Forms);
+exports.getAdoptionData = async (req, res) => {
+  try {
+    const adoptionForms = await AdoptionForm.find({})
+      .populate('userId') 
+      .populate('petId'); 
+
+    res.json(adoptionForms);
   } catch (err) {
     console.error(err.message);
     res.status(500).send('Server error');
   }
-}
+};
 exports.getAdoptionFormById= async (req,res)=>{
   try{
-    const Form=await AdoptionForm.findById(req.params.id);
+    const Form=await AdoptionForm.findById(req.params.id).populate('userId') 
+    .populate('petId');
     res.json(Form);
   } catch (err) {
     console.error(err.message);
@@ -86,5 +90,18 @@ exports.rejectAdoptionForm = async (req, res) => {
     res.status(200).json({ message: 'Adoption form rejected' });
   } catch (error) {
     res.status(500).json({ message: 'Server error', error });
+  }
+};
+
+exports.getAdoptionRequestsByUserId = async (req, res) => {
+  const userId = req.user.id;
+
+  try {
+    const adoptionRequests = await AdoptionForm.find({ userId: userId }).populate('petId');
+
+    res.json(adoptionRequests);
+  } catch (err) {
+    console.error(err.message);
+    res.status(500).send('Server Error');
   }
 };

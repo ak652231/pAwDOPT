@@ -14,8 +14,10 @@ import AdForm from './pages/Forms/AdForm';
 import HomeNGO from './pages/HomeNGO/HomeNGO';
 import AdoptionRequests from './components/AdoptionRequests/AdoptionRequests';
 import AdoptionRequestDetails from './components/AdoptionRequestDetails/AdoptionRequestDetails';
-import AllPets from './pages/Manage pets/AllPets';
-import EditPets from './pages/Manage pets/EditPets';
+import AllPets from './pages/Manage pets/AllPets/AllPets';
+import EditPets from './pages/Manage pets/EditPets/EditPets';
+import MyAdoptionRequests from './pages/myAdoptionRequests/myAdoptionRequests';
+import AddPet from './pages/Manage pets/AddPet/AddPet';
 
 function App() {
   return (
@@ -33,12 +35,14 @@ function App() {
         <Route path="/volunteer" element={<Volunteer />} />
         <Route path="/process" element={<ProcessS />} />
         <Route path="/adopt" element={<Adopt />} />
+        <Route path="/myReq" element={<MyAdoptionRequests />} />
         <Route path="/adopt/:id" element={<PetDetails />} />
         <Route path="/adform/:id" element={<AdForm />}></Route>
         <Route path="/homengo" element={<HomeNGO/>}></Route>
         <Route path="/adoption-requests" element={<AdoptionRequests/>}></Route>
         <Route path="/adoption-requests/:id" element={<AdoptionRequestDetails/>}></Route>
         <Route path="/manage-pets" element={<AllPets/>}></Route>
+        <Route path="/manage-pets/add-pet" element={<AddPet/>}></Route>
         <Route path="/manage-pets/edit/:id" element={<EditPets/>}></Route>
       </Routes>
     </Router>

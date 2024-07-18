@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
-import Navbar from '../../components/NavbarNGO/NavbarNGO';
+import Navbar from '../../../components/NavbarNGO/NavbarNGO';
 import './AllPets.css';
 
 function AllPets() {
@@ -57,26 +57,25 @@ function AllPets() {
 
   const handleDeletePet = async (id) => {
     try {
-        const token= localStorage.getItem('token');
+      const token = localStorage.getItem('token');
       const response = await fetch(`http://localhost:5000/api/pets/${id}`, {
         method: 'DELETE',
         headers: {
           'Content-Type': 'application/json',
-          'x-auth-token':token
+          'x-auth-token': token
         },
       });
-  
+
       if (!response.ok) {
         throw new Error('Failed to delete pet');
       }
-  
+
       setPets(prevPets => prevPets.filter(pet => pet._id !== id));
       console.log(`Pet with id: ${id} deleted successfully`);
     } catch (error) {
       console.error('Error deleting pet:', error);
     }
   };
-  
 
   const toggleDropdown = (id) => {
     setActiveDropdown(activeDropdown === id ? null : id);
@@ -88,34 +87,38 @@ function AllPets() {
       <div className="adoption-content">
         <h1 className="page-title">Manage Adoptable Pets</h1>
         
-        <div className="filter-section">
-          <div className="filter-group">
-            <label htmlFor="pet-type" className="filter-label">Animal Type:</label>
-            <select 
-              id="pet-type" 
-              className="filter-select"
-              value={selectedType}
-              onChange={(e) => setSelectedType(e.target.value)}
-            >
-              {animalTypes.map(type => (
-                <option key={type} value={type}>{type}</option>
-              ))}
-            </select>
-          </div>
+        <div className="filter-sections">
+          <div className="filter-controls">
+            <div className="filter-group">
+              <label htmlFor="pet-type" className="filter-label">Animal Type:</label>
+              <select 
+                id="pet-type" 
+                className="filter-select"
+                value={selectedType}
+                onChange={(e) => setSelectedType(e.target.value)}
+              >
+                {animalTypes.map(type => (
+                  <option key={type} value={type}>{type}</option>
+                ))}
+              </select>
+            </div>
 
-          <div className="filter-group">
-            <label htmlFor="pet-breed" className="filter-label">Breed:</label>
-            <select 
-              id="pet-breed" 
-              className="filter-select"
-              value={selectedBreed}
-              onChange={(e) => setSelectedBreed(e.target.value)}
-            >
-              {availableBreeds.map(breed => (
-                <option key={breed} value={breed}>{breed}</option>
-              ))}
-            </select>
+            <div className="filter-group">
+              <label htmlFor="pet-breed" className="filter-label">Breed:</label>
+              <select 
+                id="pet-breed" 
+                className="filter-select"
+                value={selectedBreed}
+                onChange={(e) => setSelectedBreed(e.target.value)}
+              >
+                {availableBreeds.map(breed => (
+                  <option key={breed} value={breed}>{breed}</option>
+                ))}
+              </select>
+            </div>
           </div>
+          
+          <button className="add-pet-button" onClick={() => navigate('/manage-pets/add-pet')}>Add Pet +</button>
         </div>
 
         <div className="pet-list">

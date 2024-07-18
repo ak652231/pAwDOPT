@@ -11,37 +11,20 @@ function AdoptionRequests() {
     fetchAdoptionRequests();
   }, []);
 
-
   const fetchAdoptionRequests = async () => {
     try {
       const response = await fetch('http://localhost:5000/api/forms/getAdoptionData');
-      const token = localStorage.getItem('token'); 
+      const token = localStorage.getItem('token');
       if (!token) {
         window.location.href = '/';
         throw new Error('Failed to fetch adoption requests');
       }
-      const requestsData = await response.json();
-      const detailedRequests = await Promise.all(requestsData.map(async (request) => {
-        if (!request.rejected) {
-          const petResponse = await fetch(`http://localhost:5000/api/pets/${request.petId}`);
-          const userResponse = await fetch(`http://localhost:5000/api/auth/${request.userId}`);
-          
-          const pet = await petResponse.json();
-          const user = await userResponse.json();
-          
-          return { ...request, pet, user };
-        }
-        return null;
-      }));
-  
-      const filteredRequests = detailedRequests.filter(request => request !== null);
-      
-      setAdoptionRequests(filteredRequests);
+      const adoptionData = await response.json();
+      setAdoptionRequests(adoptionData);
     } catch (error) {
       console.error('Error fetching adoption requests:', error);
     }
   };
-  
 
   const handleViewDetails = (requestId) => {
     navigate(`/adoption-requests/${requestId}`);
@@ -57,9 +40,9 @@ function AdoptionRequests() {
           {adoptionRequests.map(request => (
             <div key={request._id} className="request-card">
               <div className="request-info">
-                <h2 className="pet-name">{request.pet.name}</h2>
-                <p className="pet-details">{request.pet.type} - {request.pet.breed}</p>
-                <p className="requester-name">Requested by: {request.user.name}</p>
+                <h2 className="pet-name">{request.petId.name}</h2>
+                <p className="pet-details">{request.petId.type} - {request.petId.breed}</p>
+                <p className="requester-name">Requested by: {request.userId.name}</p>
                 <button 
                   className="view-details-button"
                   onClick={() => handleViewDetails(request._id)}
@@ -68,8 +51,8 @@ function AdoptionRequests() {
                 </button>
               </div>
               <div className="pet-image">
-                {request.pet.photos && request.pet.photos.length > 0 && (
-                  <img src={request.pet.photos[0]} alt={request.pet.name} />
+                {request.petId.photos && request.petId.photos.length > 0 && (
+                  <img src={request.petId.photos[0]} alt={request.petId.name} />
                 )}
               </div>
             </div>
