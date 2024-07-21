@@ -34,7 +34,7 @@ function AdoptionRequests() {
     <div className="adoption-requests-page">
       <Navbar />
       <div className="adoption-requests-content">
-        <h1 className="page-title">Adoption Requests</h1>
+        <h1 className="details-page-title">Adoption Requests</h1>
         
         <div className="requests-list">
           {adoptionRequests.map(request => (

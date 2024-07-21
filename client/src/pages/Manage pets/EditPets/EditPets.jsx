@@ -96,7 +96,7 @@ function EditPets() {
     <div className="edit-pet-page">
       <Navbar />
       <div className="edit-pet-content">
-        <h1 className="page-title">Edit Pet Details</h1>
+        <h1 className="edit-page-title">Edit Pet Details</h1>
         <form onSubmit={handleSubmit} className="edit-pet-form">
           <div className="form-group">
             <label htmlFor="name">Name:</label>

@@ -1,0 +1,160 @@
+@import url('https://fonts.googleapis.com/css2?family=Righteous&family=Moo+Lah+Lah&family=Nunito:wght@200..900&display=swap');
+
+:root {
+  --color-dark-green: #024023;
+  --color-light-green: #a3f79d;
+  --color-mid-green: #50e446;
+  --color-white: #ffffff;
+  --color-gray: #434141;
+}
+
+.up-profile-page {
+  background-color: var(--color-light-green);
+  min-height: 100vh;
+  padding: 2rem;
+}
+
+.up-profile-content {
+  max-width: 75rem;
+  margin: 0 auto;
+  padding: 2rem;
+  background-color: var(--color-white);
+  border-radius: 1rem;
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+}
+
+.up-page-title {
+  font-size: 3rem;
+  color: var(--color-dark-green);
+  text-align: center;
+  margin-bottom: 2rem;
+  font-weight: 700;
+}
+
+.up-profile-card {
+  background-color: var(--color-light-green);
+  border-radius: 1rem;
+  padding: 2rem;
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+  margin-bottom: 2rem;
+}
+
+.up-profile-header {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  margin-bottom: 2rem;
+}
+
+.up-profile-avatar {
+  width: 120px;
+  height: 120px;
+  background-color: var(--color-dark-green);
+  color: var(--color-light-green);
+  font-size: 3.5rem;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  border-radius: 50%;
+  margin-bottom: 1rem;
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.2);
+  text-transform: capitalize;
+}
+
+.up-profile-name {
+  font-size: 2.5rem;
+  color: var(--color-dark-green);
+  font-weight: 700;
+  text-align: center;
+  text-transform: capitalize;
+}
+
+.up-profile-role {
+  font-size: 1.2rem;
+  color: var(--color-gray);
+  border-radius: 2rem;
+  text-transform: capitalize;
+  text-align: center;
+  margin-top: 0;
+}
+
+.up-profile-details {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 1.5rem;
+    margin-bottom: 2rem;
+  }
+  
+
+.up-detail-item {
+  font-size: 1.1rem;
+  color: var(--color-dark-green);
+  background-color: var(--color-white);
+  padding: 1rem;
+  border-radius: 0.5rem;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+  display: flex;
+  flex-direction: column;
+}
+
+.up-detail-label {
+  font-weight: 700;
+  margin-bottom: 0.5rem;
+}
+
+.up-detail-value {
+  word-break: break-word;
+}
+
+.up-edit-profile-button {
+  background-color: var(--color-dark-green);
+  color: var(--color-light-green);
+  font-size: 1.1rem;
+  padding: 0.75rem 2rem;
+  border: none;
+  border-radius: 2rem;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  display: block;
+  margin: 0 auto;
+  font-weight: 600;
+}
+
+.up-edit-profile-button:hover {
+  background-color: var(--color-mid-green);
+  color: var(--color-dark-green);
+  transform: translateY(-2px);
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.2);
+}
+
+.nuni {
+  font-family: 'Nunito', sans-serif;
+}
+
+@media (max-width: 47.9375rem) {
+  .up-profile-content {
+    padding: 1rem;
+  }
+
+  .up-page-title {
+    font-size: 2.5rem;
+  }
+
+  .up-profile-name {
+    font-size: 2rem;
+  }
+
+  .up-profile-details {
+    grid-template-columns: 1fr;
+  }
+
+  .up-profile-avatar {
+    width: 100px;
+    height: 100px;
+    font-size: 3rem;
+  }
+
+  .up-detail-item {
+    font-size: 1rem;
+  }
+}

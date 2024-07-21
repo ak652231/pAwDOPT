@@ -118,7 +118,7 @@
   }
   
   .adoption-request-details .approve-btn {
-    background-color: #50e446; /* Mid green color */
+    background-color: #50e446; 
     color: white;
   }
   
@@ -127,7 +127,7 @@
   }
   
   .adoption-request-details .reject-btn {
-    background-color: #ff4d4d; /* Red color */
+    background-color: #ff4d4d; 
     color: white;
   }
   

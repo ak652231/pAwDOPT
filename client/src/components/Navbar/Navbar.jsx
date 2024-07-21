@@ -1,15 +1,21 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import logoImage from '../../assets/logo.png';
+import profile from '../../assets/profile.png';
 import './Navbar.css';
 
 function Navbar() {
+  const [isDropdownOpen, setIsDropdownOpen] = useState(false);
   const navigate = useNavigate();
   const token = localStorage.getItem('token');
 
   const handleLogout = () => {
     localStorage.removeItem('token');
     navigate('/login');
+  };
+
+  const toggleDropdown = () => {
+    setIsDropdownOpen(!isDropdownOpen);
   };
 
   return (
@@ -31,21 +37,25 @@ function Navbar() {
         {!token ? (
           <>
             <Link to="/signup">
-              <button className="sign-up-btn clr-lgrn mr-2.5 font-bold text-md w-28 nuni">Sign Up</button>
+              <button className="auth sign-up-btn clr-lgrn mr-2.5 font-bold text-md w-28 nuni">Sign Up</button>
             </Link>
             <Link to="/login">
-              <button className="log-in-btn px-3 py-1 rounded text-md w-28 bg-lgrn clr-dgrn font-bold nuni">Log In</button>
+              <button className="auth log-in-btn px-3 py-1 rounded text-md w-28 bg-lgrn clr-dgrn font-bold nuni">Log In</button>
             </Link>
           </>
         ) : (
-          <Link to="/logout">
-          <button 
-            onClick={handleLogout} 
-            className="log-out-btn px-3 py-1 rounded text-md w-28 bg-lgrn clr-dgrn font-bold nuni"
-          >
-            Log Out
-          </button>
-          </Link>
+          <div className="profile-container">
+            <button className="profile-btn" onClick={toggleDropdown}>
+              <img src={profile} alt="Profile" className="profile-image" />
+            </button>
+            {isDropdownOpen && (
+              <div className="profile-dropdown">
+                <Link to="/user-profile" className="dropdown-item">Your Profile</Link>
+                <Link to="/myReq" className="dropdown-item">Your Requests</Link>
+                <Link onClick={handleLogout} className="dropdown-item logout">Log Out</Link>
+              </div>
+            )}
+          </div>
         )}
       </div>
     </nav>

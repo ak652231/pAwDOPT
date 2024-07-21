@@ -18,6 +18,8 @@ import AllPets from './pages/Manage pets/AllPets/AllPets';
 import EditPets from './pages/Manage pets/EditPets/EditPets';
 import MyAdoptionRequests from './pages/myAdoptionRequests/myAdoptionRequests';
 import AddPet from './pages/Manage pets/AddPet/AddPet';
+import UserProfile from './pages/UserProfile/UserProfile';
+import EditUser from './pages/UserProfile/EditUser';
 
 function App() {
   return (
@@ -44,6 +46,8 @@ function App() {
         <Route path="/manage-pets" element={<AllPets/>}></Route>
         <Route path="/manage-pets/add-pet" element={<AddPet/>}></Route>
         <Route path="/manage-pets/edit/:id" element={<EditPets/>}></Route>
+        <Route path="/user-profile" element={<UserProfile/>}></Route>
+        <Route path="/editUser" element={<EditUser/>}></Route>
       </Routes>
     </Router>
   );

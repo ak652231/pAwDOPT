@@ -1,6 +1,6 @@
 import React from 'react';
 import logoImage from '../../assets/logo.png';
-import donateImage from '../../assets/shelter.jpg'; // Assume we have this image
+import donateImage from '../../assets/shelter.jpg'; 
 import "./Donate.css";
 import Navbar from '../../components/Navbar/Navbar';
 
@@ -10,11 +10,11 @@ function Donate() {
       <Navbar/>
 
       <div className='donate-content'>
-        <h1 className='nuni page-title'>Support Our Cause</h1>
+        <h1 className='nuni donate-page-title'>Support Our Cause</h1>
         
         <div className='donate-intro'>
           <div className='donate-text'>
-            <h2 className='nuni section-title'>Your Donation Makes a Difference</h2>
+            <h2 className='nuni donate-section-title'>Your Donation Makes a Difference</h2>
             <p className='nuni'>Every contribution, no matter how small, helps us continue our mission of rescuing and rehoming pets in need. Your generosity directly supports animal care, medical treatments, and our adoption programs.</p>
             <p className='nuni donate-quote'>"The greatness of a nation and its moral progress can be judged by the way its animals are treated." - Mahatma Gandhi</p>
           </div>
@@ -27,7 +27,7 @@ function Donate() {
           <hr className="custom-hr" />
         </div>
 
-        <h2 className='nuni section-title'>Ways to Donate</h2>
+        <h2 className='nuni donate-section-title'>Ways to Donate</h2>
         <div className='donation-options'>
           <div className="donation-option">
             <h3 className="nuni">One-Time Donation</h3>
@@ -50,7 +50,7 @@ function Donate() {
           <hr className="custom-hr" />
         </div>
 
-        <h2 className='nuni section-title'>Your Impact</h2>
+        <h2 className='nuni donate-section-title'>Your Impact</h2>
         <div className='impact-section'>
           <div className='impact-item'>
             <h3 className='nuni'>₹300</h3>
@@ -71,7 +71,7 @@ function Donate() {
         </div>
 
         <div className='other-ways'>
-          <h2 className='nuni section-title'>Other Ways to Help</h2>
+          <h2 className='nuni donate-section-title'>Other Ways to Help</h2>
           <ul className='nuni'>
             <li>Volunteer your time at our shelter</li>
             <li>Foster a pet in need</li>

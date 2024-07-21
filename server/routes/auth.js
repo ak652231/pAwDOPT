@@ -2,10 +2,11 @@ const express = require('express');
 const router = express.Router();
 const { check, validationResult } = require('express-validator');
 const authController = require('../controllers/authController');
+const auth = require('../middleware/auth');
 
 router.post('/signup', authController.signUp);
-router.get('/:id', authController.getUserById);
-
+router.get('/userprofile',auth, authController.getUserById);
+router.put('/edituser',auth,authController.EditUserById)
 router.post(
   '/login',
   [

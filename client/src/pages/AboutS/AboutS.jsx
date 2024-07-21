@@ -10,11 +10,11 @@ function AboutS() {
       <Navbar/>
 
       <div className='about-content'>
-        <h1 className='nuni page-title'>About pAwDOPT</h1>
+        <h1 className='nuni abouts-page-title'>About pAwDOPT</h1>
         
         <div className='text'>
           <div className='left'>
-            <h2 className='nuni section-title'>Our Mission</h2>
+            <h2 className='nuni abouts-section-title'>Our Mission</h2>
             <p className='upper'>At pAwDOPT, we rescue and rehabilitate pets from various backgrounds, including strays, abandoned pets, and those surrendered by their owners. Our dedicated team of volunteers provides medical care, socialization, and training to ensure each pet is ready for their new home.</p>
             <p className='nuni'>"Our mission is to connect loving families with pets in need of a forever home. We believe that every pet deserves a second chance, and we are dedicated to making the adoption process smooth and enjoyable for both the animals and their new families."</p>
           </div>
@@ -27,7 +27,7 @@ function AboutS() {
           <hr className="custom-hr" />
         </div>
 
-        <h2 className='nuni section-title'>Meet Our Team</h2>
+        <h2 className='nuni abouts-section-title'>Meet Our Team</h2>
         <div className="team-members">
           <div className="team-member">
             <img className="mx-auto rounded-full mb-2" src="" alt="Thampi" width="150" height="150" />
@@ -53,7 +53,7 @@ function AboutS() {
           <hr className="custom-hr" />
         </div>
 
-        <h2 className='nuni section-title'>Our NGO</h2>
+        <h2 className='nuni abouts-section-title'>Our NGO</h2>
         <div className='ngo-info'>
           <p className='nuni'>pAwDOPT is a registered non-profit organization dedicated to animal welfare and pet adoption. Founded in 2015, we have successfully rehomed over 5,000 pets and provided care for countless more.</p>
           <p className='nuni'>Our services include:</p>

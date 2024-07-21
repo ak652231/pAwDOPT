@@ -89,7 +89,7 @@ function AllPets() {
     <div className="adoption-page">
       <Navbar />
       <div className="adoption-content">
-        <h1 className="page-title">Manage Adoptable Pets</h1>
+        <h1 className="allpets-page-title">Manage Adoptable Pets</h1>
         
         <div className="filter-sections">
           <div className="filter-controls">

@@ -28,13 +28,7 @@ function Header() {
                 Adopt now
               </button>
             </Link>
-            {isLoggedIn && (
-              <Link to="/myReq">
-                <button className="px-3 py-1 bg-black rounded-3xl text-md w-28 mt-8 bg-gray-800 clr-lgrn text-lg w-40 nuni mb-24">
-                  My requests
-                </button>
-              </Link>
-            )}
+            
           </div>
           <div>
             <img className="hero" src={hero} alt="dog" />

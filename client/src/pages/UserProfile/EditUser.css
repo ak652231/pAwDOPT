@@ -1,0 +1,149 @@
+@import url('https://fonts.googleapis.com/css2?family=Righteous&family=Moo+Lah+Lah&family=Nunito:wght@200..900&display=swap');
+
+:root {
+  --color-dark-green: #024023;
+  --color-light-green: #a3f79d;
+  --color-mid-green: #50e446;
+  --color-white: #ffffff;
+  --color-gray: #434141;
+}
+
+.edit-user-page {
+  background-color: var(--color-light-green);
+  min-height: 100vh;
+  padding: 2rem;
+}
+
+.edit-user-content {
+  max-width: 75rem;
+  margin: 0 auto;
+  padding: 2rem;
+  background-color: var(--color-white);
+  border-radius: 1rem;
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+}
+
+.edit-page-title {
+  font-size: 3rem;
+  color: var(--color-dark-green);
+  text-align: center;
+  margin-bottom: 2rem;
+  font-weight: 700;
+}
+
+.edit-user-card {
+  background-color: var(--color-light-green);
+  border-radius: 1rem;
+  padding: 2rem;
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+}
+
+.edit-user-avatar {
+  width: 120px;
+  height: 120px;
+  background-color: var(--color-dark-green);
+  color: var(--color-light-green);
+  font-size: 3.5rem;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  border-radius: 50%;
+  margin: 0 auto 2rem;
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.2);
+  text-transform: capitalize;
+}
+
+.edit-user-form {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 1.5rem;
+}
+
+.form-group {
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+}
+
+.form-group label {
+  font-size: 1.1rem;
+  color: var(--color-dark-green);
+  font-weight: 600;
+}
+
+.form-group input,
+.form-group textarea,
+.form-group select {
+  padding: 0.75rem;
+  font-size: 1rem;
+  border-radius: 0.5rem;
+  border: 0.125rem solid var(--color-mid-green);
+  background-color: var(--color-white);
+  font-family: 'Nunito', sans-serif;
+}
+
+.form-group textarea {
+  min-height: 6rem;
+  resize: vertical;
+}
+
+.form-group:nth-child(4) {
+  grid-column: 1 / -1;
+}
+
+.submit-button {
+  grid-column: 1 / -1;
+  background-color: var(--color-dark-green);
+  color: var(--color-light-green);
+  font-size: 1.1rem;
+  padding: 0.75rem 2rem;
+  border: none;
+  border-radius: 2rem;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  font-weight: 600;
+  justify-self: center;
+  margin-top: 1rem;
+}
+
+.submit-button:hover {
+  background-color: var(--color-mid-green);
+  color: var(--color-dark-green);
+  transform: translateY(-2px);
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.2);
+}
+
+.nuni {
+  font-family: 'Nunito', sans-serif;
+}
+
+@media (max-width: 47.9375rem) {
+  .edit-user-content {
+    padding: 1rem;
+  }
+
+  .edit-page-title {
+    font-size: 2.5rem;
+  }
+
+  .edit-user-avatar {
+    width: 100px;
+    height: 100px;
+    font-size: 3rem;
+  }
+
+  .edit-user-form {
+    grid-template-columns: 1fr;
+  }
+
+  .form-group label {
+    font-size: 1rem;
+  }
+
+  .form-group input,
+  .form-group textarea,
+  .form-group select,
+  .submit-button {
+    font-size: 0.9rem;
+  }
+}
