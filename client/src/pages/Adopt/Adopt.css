@@ -10,7 +10,7 @@
     padding: 1.25rem;
   }
   
-  .page-title {
+  .adopt-page-title {
     font-size: 3rem;
     color: var(--color-dark-green);
     text-align: center;
@@ -146,4 +146,3 @@
     }
   }
   
-  /* ... rest of your existing CSS ... */

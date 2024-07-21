@@ -90,7 +90,8 @@ exports.login = async (req, res) => {
 
 exports.getUserById = async (req, res) => {
   try {
-    const user = await User.findById(req.params.id);
+    const userId = req.user.id;
+    const user = await User.findById(userId);
 
     if (!user) {
       return res.status(404).json({ msg: 'user not found' });
@@ -102,6 +103,39 @@ exports.getUserById = async (req, res) => {
     if (err.kind === 'ObjectId') {
       return res.status(404).json({ msg: 'user not found' });
     }
+    res.status(500).send('Server error');
+  }
+};
+exports.EditUserById = async (req, res) => {
+  console.log("Received update data:", req.body);
+  const { email, name, number, address, gender, age,role } = req.body;
+
+  const userFields = {};
+  if (email) userFields.email = email;
+  if (name) userFields.name = name;
+  if (number) userFields.number = number;
+  if (age) userFields.age = age;
+  if (address) userFields.address = address;
+  if (gender) userFields.gender = gender;
+  if (role) userFields.role = role;
+
+  try {
+    const userId=req.user.id;
+    let user = await User.findById(userId);
+
+    if (!user) {
+      return res.status(404).json({ msg: 'Pet not found' });
+    }
+    
+    user = await User.findByIdAndUpdate(
+      userId,
+      { $set: userFields },
+      { new: true }
+    );
+
+    res.json(user);
+  } catch (err) {
+    console.error(err.message);
     res.status(500).send('Server error');
   }
 };

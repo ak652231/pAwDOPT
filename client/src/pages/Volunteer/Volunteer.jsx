@@ -8,7 +8,7 @@ function VolunteerPage() {
     <div className="volunteer-page">
       <Navbar/>
       <div className='volunteer-content'>
-        <h1 className='nuni page-title'>Volunteer with Us</h1>
+        <h1 className='nuni volunteer-page-title'>Volunteer with Us</h1>
         
         
 
@@ -27,7 +27,7 @@ function VolunteerPage() {
           <hr className="custom-hr" />
         </div>
 
-        <h2 className='nuni section-title'>Volunteer Opportunities</h2>
+        <h2 className='nuni volunteer-section-title'>Volunteer Opportunities</h2>
         <div className='opportunities'>
           <div className="opportunity">
             <h3 className="nuni">Animal Care</h3>
@@ -51,7 +51,7 @@ function VolunteerPage() {
           <hr className="custom-hr" />
         </div>
 
-        <h2 className='nuni section-title'>Volunteering Process</h2>
+        <h2 className='nuni volunteer-section-title'>Volunteering Process</h2>
         <div className='volunteering-process'>
           <ol className='nuni process-list'>
             <li>Fill out our online volunteer application form</li>

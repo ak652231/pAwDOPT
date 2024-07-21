@@ -55,7 +55,7 @@ function Adopt() {
     <div className="adoption-page">
       <Navbar />
       <div className="adoption-content">
-        <h1 className="page-title">Adopt a Pet</h1>
+        <h1 className="adopt-page-title">Adopt a Pet</h1>
         
         <div className="filter-section">
           <div className="filter-group">
