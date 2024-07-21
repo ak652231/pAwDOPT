@@ -30,6 +30,9 @@ function EditPets() {
       }
       const petData = await response.json();
       setPet(petData);
+      if (petData.photos && petData.photos.length > 0) {
+        setPreviewUrl(`data:image/jpeg;base64,${petData.photos[0].data}`);
+      }
     } catch (error) {
       console.error('Error fetching pet details:', error);
     }
@@ -59,21 +62,27 @@ function EditPets() {
     e.preventDefault();
     try {
       const token = localStorage.getItem('token');
+      const formData = new FormData();
+      
+      // Append all pet attributes to formData
+      Object.keys(pet).forEach(key => {
+        if (key !== 'photos') {
+          formData.append(key, pet[key]);
+        }
+      });
+      
+      if (newPhoto) {
+        formData.append('photo', newPhoto);
+      }
+
       const response = await fetch(`http://localhost:5000/api/pets/${id}`, {
         method: 'PUT',
         headers: {
-          'Content-Type': 'application/json',
           'x-auth-token': token
         },
-        body: JSON.stringify({
-          name: pet.name,
-          type: pet.type,
-          breed: pet.breed,
-          age: pet.age,
-          healthInfo: pet.healthInfo,
-          compatibility: pet.compatibility
-        }),
+        body: formData,
       });
+      
       if (!response.ok) {
         throw new Error('Failed to update pet details');
       }
@@ -101,16 +110,21 @@ function EditPets() {
             />
           </div>
           <div className="form-group">
-            <label htmlFor="type">Type:</label>
-            <input
-              type="text"
-              id="type"
-              name="type"
-              value={pet.type}
-              onChange={handleInputChange}
-              required
-            />
-          </div>
+  <label htmlFor="type">Type:</label>
+  <select
+    id="type"
+    name="type"
+    value={pet.type}
+    onChange={handleInputChange}
+    required
+  >
+    <option value="">Select a type</option>
+    <option value="Dog">Dog</option>
+    <option value="Cat">Cat</option>
+    <option value="Other">Other</option>
+  </select>
+</div>
+
           <div className="form-group">
             <label htmlFor="breed">Breed:</label>
             <input

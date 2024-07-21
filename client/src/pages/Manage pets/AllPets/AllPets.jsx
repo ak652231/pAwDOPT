@@ -81,6 +81,10 @@ function AllPets() {
     setActiveDropdown(activeDropdown === id ? null : id);
   };
 
+  const getImageSrc = (base64Image) => {
+    return base64Image ? `data:image/png;base64,${base64Image}` : 'path/to/placeholder/image.png';
+  };
+
   return (
     <div className="adoption-page">
       <Navbar />
@@ -134,7 +138,7 @@ function AllPets() {
               </div>
               <div className="pet-image">
                 {pet.photos && pet.photos.length > 0 && (
-                  <img src={pet.photos[0]} alt={pet.name} />
+                  <img src={getImageSrc(pet.photos[0].data)} alt={pet.name} />
                 )}
                 <div className="pet-actions">
                   <button className="action-button" onClick={() => toggleDropdown(pet._id)}>⋮</button>

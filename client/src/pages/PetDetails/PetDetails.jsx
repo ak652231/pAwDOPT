@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from 'react';
-import { useParams, useNavigate } from 'react-router-dom'; 
+import { useParams, useNavigate } from 'react-router-dom';
 import Navbar from '../../components/Navbar/Navbar';
+import NavbarNGO from '../../components/NavbarNGO/NavbarNGO';
 import { jwtDecode } from "jwt-decode";
 import './PetDetails.css';
 
@@ -14,18 +15,9 @@ function PetDetails() {
     const token = localStorage.getItem('token');
     if (token) {
       const decodedToken = jwtDecode(token);
-      console.log('Decoded token:', decodedToken);
-
       const user = decodedToken.user;
-      console.log('User object:', user);
-      
-      if (user && user.email && user.role) {
-        console.log('Email:', user.email);
-        console.log('Role:', user.role);
-        
-        if (user.email.endsWith('@ngo.com') || user.role === 'ngo_worker') {
-          setIsNGOWorker(true);
-        }
+      if (user && (user.email.endsWith('@ngo.com') || user.role === 'ngo_worker')) {
+        setIsNGOWorker(true);
       }
     }
   }, []);
@@ -38,6 +30,7 @@ function PetDetails() {
           throw new Error('Pet not found');
         }
         const petData = await response.json();
+        console.log('Received pet data:', petData);
         setPet(petData);
       } catch (error) {
         console.error('Error fetching pet details:', error);
@@ -55,12 +48,18 @@ function PetDetails() {
     navigate(`/adform/${id}`);
   };
 
+  const getImageSrc = (base64Image) => {
+    return base64Image ? `data:image/jpeg;base64,${base64Image}` : 'path/to/placeholder/image.png';
+  };
+
   return (
     <div className="pet-details-page">
-      <Navbar />
+     {isNGOWorker ? <NavbarNGO /> : <Navbar />}
       <div className="pet-details-content">
         <div className="pet-header">
-          <img src={pet.photos[0]} alt={pet.name} />
+          {pet.photos && pet.photos[0] && (
+            <img src={getImageSrc(pet.photos[0].data)} alt={pet.name} />
+          )}
           <div className="pet-name-overlay">
             <h1 className="pet-name-large">{pet.name}</h1>
           </div>
@@ -87,9 +86,9 @@ function PetDetails() {
             <p>{pet.compatibility}</p>
           </div>
           <div className="pet-photos">
-            {pet.photos && pet.photos.length > 1 && 
+            {pet.photos && pet.photos.length > 1 &&
               pet.photos.slice(1).map((photo, index) => (
-                <img key={index} src={photo} alt={`${pet.name} - Photo ${index + 2}`} />
+                <img key={index} src={getImageSrc(photo.data)} alt={`${pet.name} - Photo ${index + 2}`} />
               ))
             }
           </div>

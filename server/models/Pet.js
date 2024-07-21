@@ -4,7 +4,7 @@ const PetSchema = new mongoose.Schema({
   type: {
     type: String,
     required: true,
-    enum: ['dog', 'cat', 'other'],
+    enum: ['Dog', 'Cat', 'Other'],
   },
   name: {
     type: String,
@@ -18,9 +18,10 @@ const PetSchema = new mongoose.Schema({
     type: Number,
     required: true,
   },
-  photos: {
-    type: [String], 
-  },
+  photos: [{
+    data: Buffer,
+    contentType: String 
+  }],
   healthInfo: {
     type: String,
     required: true,

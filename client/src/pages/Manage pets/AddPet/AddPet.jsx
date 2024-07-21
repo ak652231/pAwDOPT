@@ -83,14 +83,18 @@ function AddPet() {
           </div>
           <div className="form-group">
             <label htmlFor="type">Type:</label>
-            <input
-              type="text"
+            <select
               id="type"
               name="type"
               value={pet.type}
               onChange={handleInputChange}
               required
-            />
+            >
+              <option value="">Select Type</option>
+              <option value="Dog">Dog</option>
+              <option value="Cat">Cat</option>
+              <option value="Other">Other</option>
+            </select>
           </div>
           <div className="form-group">
             <label htmlFor="breed">Breed:</label>
