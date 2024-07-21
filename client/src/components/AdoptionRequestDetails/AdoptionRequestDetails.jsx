@@ -1,11 +1,26 @@
 import React, { useState, useEffect } from 'react';
 import { useParams } from 'react-router-dom';
-import Navbar from '../../components/NavbarNGO/NavbarNGO';
+import { jwtDecode } from 'jwt-decode';
+import { useNavigate } from 'react-router-dom';
+import Navbar from '../../components/Navbar/Navbar';
 import './AdoptionRequestDetails.css';
 
 function AdoptionRequestDetails() {
   const [requestDetails, setRequestDetails] = useState(null);
   const { id } = useParams();
+  const [isNGOWorker, setIsNGOWorker] = useState(false);
+  const navigate=useNavigate();
+
+  useEffect(() => {
+    const token = localStorage.getItem('token');
+    if (token) {
+      const decodedToken = jwtDecode(token);
+      const user = decodedToken.user;
+      if (user && (user.email.endsWith('@ngo.com') || user.role === 'ngo_worker')) {
+        setIsNGOWorker(true);
+      }
+    }
+  }, []);
 
   useEffect(() => {
     if (id) {
@@ -41,17 +56,28 @@ function AdoptionRequestDetails() {
         window.location.href = '/';
         throw new Error('Authorization token is missing');
       }
-
-      const response = await fetch(`http://localhost:5000/api/forms/approve/ngo/${id}`, {
-        method: 'PATCH',
-        headers: {
-          'Content-Type': 'application/json',
-          'Authorization': `Bearer ${token}`
-        }
-      });
+      if(isNGOWorker){
+        var response = await fetch(`http://localhost:5000/api/forms/approve/ngo/${id}`, {
+          method: 'PATCH',
+          headers: {
+            'Content-Type': 'application/json',
+            'Authorization': `Bearer ${token}`
+          }
+        });
+      } else{
+          var response = await fetch(`http://localhost:5000/api/forms/approve/admin/${id}`, {
+          method: 'PATCH',
+          headers: {
+            'Content-Type': 'application/json',
+            'Authorization': `Bearer ${token}`
+          }
+        });
+      }
+      
 
       if (response.ok) {
         alert('Adoption request approved by NGO worker');
+        navigate('/adoption-requests')
         fetchRequestDetails();
       } else {
         console.error('Failed to approve adoption request');
@@ -82,6 +108,7 @@ function AdoptionRequestDetails() {
       if (response.ok) {
         alert('Adoption request rejected');
         window.location.href = '/adoption-requests';
+        navigate('/adoption-requests')
         fetchRequestDetails();
       } else {
         console.error('Failed to reject adoption request');

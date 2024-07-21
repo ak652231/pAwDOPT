@@ -37,7 +37,7 @@ function Login() {
         localStorage.setItem('token', data.token);
         console.log('Login successful');
         alert('Login successful');
-        if (formData.email.endsWith('@ngo.com')) {
+        if (formData.email.endsWith('@ngo.com') || formData.email.endsWith('@ngoAdmin.com')) {
           window.location.href = '/homengo';
         } else {
           window.location.href = '/';

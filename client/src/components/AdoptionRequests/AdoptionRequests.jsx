@@ -1,26 +1,56 @@
 import React, { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
-import Navbar from '../../components/NavbarNGO/NavbarNGO';
+import { jwtDecode } from 'jwt-decode';
+import Navbar from '../../components/Navbar/Navbar';
 import './AdoptionRequests.css';
 
 function AdoptionRequests() {
   const [adoptionRequests, setAdoptionRequests] = useState([]);
   const navigate = useNavigate();
+  const [isNGOWorker, setIsNGOWorker] = useState(false);
+
+  useEffect(() => {
+    const token = localStorage.getItem('token');
+    if (token) {
+      const decodedToken = jwtDecode(token);
+      const user = decodedToken.user;
+      if (user && (user.email.endsWith('@ngo.com') || user.role === 'ngo_worker')) {
+        setIsNGOWorker(true);
+      }
+    }
+  }, []);
 
   useEffect(() => {
     fetchAdoptionRequests();
-  }, []);
+  }, [isNGOWorker]);
 
   const fetchAdoptionRequests = async () => {
     try {
-      const response = await fetch('http://localhost:5000/api/forms/getAdoptionData');
       const token = localStorage.getItem('token');
       if (!token) {
         window.location.href = '/';
+        throw new Error('Token not found');
+      }
+      
+      const response = await fetch('http://localhost:5000/api/forms/getAdoptionData', {
+        headers: {
+          'Content-Type': 'application/json',
+          'x-auth-token': token
+        }
+      });
+
+      if (!response.ok) {
         throw new Error('Failed to fetch adoption requests');
       }
+
       const adoptionData = await response.json();
-      setAdoptionRequests(adoptionData);
+
+      const filteredData = isNGOWorker 
+        ? adoptionData.filter(request => !request.ngoWorkerApproved && !request.adminApproved && !request.rejected)
+        : adoptionData.filter(request => request.ngoWorkerApproved && !request.adminApproved && !request.rejected);
+
+      setAdoptionRequests(filteredData);
+
     } catch (error) {
       console.error('Error fetching adoption requests:', error);
     }
@@ -28,6 +58,10 @@ function AdoptionRequests() {
 
   const handleViewDetails = (requestId) => {
     navigate(`/adoption-requests/${requestId}`);
+  };
+
+  const getImageSrc = (base64Image) => {
+    return base64Image ? `data:image/png;base64,${base64Image}` : 'path/to/placeholder/image.png';
   };
 
   return (
@@ -52,7 +86,7 @@ function AdoptionRequests() {
               </div>
               <div className="pet-image">
                 {request.petId.photos && request.petId.photos.length > 0 && (
-                  <img src={request.petId.photos[0]} alt={request.petId.name} />
+                  <img src={getImageSrc(request.petId.photos[0].data)} alt={request.petId.name} />
                 )}
               </div>
             </div>

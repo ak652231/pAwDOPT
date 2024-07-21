@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from 'react';
+import { jwtDecode } from 'jwt-decode';
 import { useNavigate } from 'react-router-dom';
-import Navbar from '../../../components/NavbarNGO/NavbarNGO';
+import Navbar from '../../../components/Navbar/Navbar';
 import './AllPets.css';
 
 function AllPets() {
@@ -10,6 +11,18 @@ function AllPets() {
   const [availableBreeds, setAvailableBreeds] = useState([]);
   const [activeDropdown, setActiveDropdown] = useState(null);
   const navigate = useNavigate();
+  const [isNGOWorker, setIsNGOWorker] = useState(false);
+
+  useEffect(() => {
+    const token = localStorage.getItem('token');
+    if (token) {
+      const decodedToken = jwtDecode(token);
+      const user = decodedToken.user;
+      if (user && (user.email.endsWith('@ngo.com') || user.role === 'ngo_worker')) {
+        setIsNGOWorker(true);
+      }
+    }
+  }, []);
 
   useEffect(() => {
     fetchPets();
@@ -121,8 +134,10 @@ function AllPets() {
               </select>
             </div>
           </div>
+          {isNGOWorker && (
+            <button className="add-pet-button" onClick={() => navigate('/manage-pets/add-pet')}>Add Pet +</button>
+          )}
           
-          <button className="add-pet-button" onClick={() => navigate('/manage-pets/add-pet')}>Add Pet +</button>
         </div>
 
         <div className="pet-list">
@@ -138,9 +153,10 @@ function AllPets() {
               </div>
               <div className="pet-image">
                 {pet.photos && pet.photos.length > 0 && (
-                  <img src={getImageSrc(pet.photos[0].data)} alt={pet.name} />
+                  <img  src={getImageSrc(pet.photos[0].data)} alt={pet.name} />
                 )}
-                <div className="pet-actions">
+                {isNGOWorker && (
+                  <div className="pet-actions">
                   <button className="action-button" onClick={() => toggleDropdown(pet._id)}>⋮</button>
                   {activeDropdown === pet._id && (
                     <div className="action-dropdown">
@@ -149,6 +165,8 @@ function AllPets() {
                     </div>
                   )}
                 </div>
+                )}
+                
               </div>
             </div>
           ))}

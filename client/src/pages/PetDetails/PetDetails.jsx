@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { useParams, useNavigate } from 'react-router-dom';
 import Navbar from '../../components/Navbar/Navbar';
-import NavbarNGO from '../../components/NavbarNGO/NavbarNGO';
+import NavbarNGO from '../../components/Navbar/Navbar';
 import { jwtDecode } from "jwt-decode";
 import './PetDetails.css';
 

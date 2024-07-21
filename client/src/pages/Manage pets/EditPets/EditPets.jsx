@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { useParams, useNavigate } from 'react-router-dom';
-import Navbar from '../../../components/NavbarNGO/NavbarNGO';
+import Navbar from '../../../components/Navbar/Navbar';
 import './EditPets.css';
 
 function EditPets() {
@@ -63,8 +63,6 @@ function EditPets() {
     try {
       const token = localStorage.getItem('token');
       const formData = new FormData();
-      
-      // Append all pet attributes to formData
       Object.keys(pet).forEach(key => {
         if (key !== 'photos') {
           formData.append(key, pet[key]);

@@ -29,6 +29,11 @@ function Signup() {
       setSubmitting(false);
       return;
     }
+    if (formData.role === 'ngo_admin' && !formData.email.endsWith('@ngoAdmin.com')) {
+      alert('You are not NGO worker,contact NGO Admin!');
+      setSubmitting(false);
+      return;
+    }
 
     const url = 'http://localhost:5000/api/auth/signup';
 
@@ -148,6 +153,7 @@ function Signup() {
               <option value="">Select role</option>
               <option value="adopter">Adopter</option>
               <option value="ngo_worker">NGO Worker</option>
+              <option value="ngo_admin">NGO Admin</option>
             </select>
           </div>
           <div className="form-group">

@@ -36,7 +36,7 @@ function App() {
         <Route path="/donate" element={<Donate />} />
         <Route path="/volunteer" element={<Volunteer />} />
         <Route path="/process" element={<ProcessS />} />
-        <Route path="/adopt" element={<Adopt />} />
+        <Route path="/adopt" element={<AllPets />} />
         <Route path="/myReq" element={<MyAdoptionRequests />} />
         <Route path="/adopt/:id" element={<PetDetails />} />
         <Route path="/adform/:id" element={<AdForm />}></Route>
