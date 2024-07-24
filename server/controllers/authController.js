@@ -139,3 +139,20 @@ exports.EditUserById = async (req, res) => {
     res.status(500).send('Server error');
   }
 };
+exports.getUsers = async (req, res) => {
+  try {
+    const users = await User.find();
+
+    if (!users) {
+      return res.status(404).json({ msg: 'users not found' });
+    }
+
+    res.json(users);
+  } catch (err) {
+    console.error(err.message);
+    if (err.kind === 'ObjectId') {
+      return res.status(404).json({ msg: 'users not found' });
+    }
+    res.status(500).send('Server error');
+  }
+};

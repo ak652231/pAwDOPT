@@ -6,7 +6,8 @@ const auth = require('../middleware/auth');
 
 router.post('/signup', authController.signUp);
 router.get('/userprofile',auth, authController.getUserById);
-router.put('/edituser',auth,authController.EditUserById)
+router.put('/edituser',auth,authController.EditUserById);
+router.get('/getusers',authController.getUsers);
 router.post(
   '/login',
   [

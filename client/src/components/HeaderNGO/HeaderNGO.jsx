@@ -52,7 +52,7 @@ function HeaderNGO() {
           <div className="dashboard-card">
           <h2 className="card-title">Manage Workers</h2>
           <p className="card-description">Keep an eye on activity of workers</p>
-          <Link to="/manage-pets">
+          <Link to="/manage-workers">
             <button className="card-button">Manage Workers</button>
           </Link>
         </div>}
