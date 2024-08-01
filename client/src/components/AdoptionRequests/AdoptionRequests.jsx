@@ -24,37 +24,42 @@ function AdoptionRequests() {
     fetchAdoptionRequests();
   }, [isNGOWorker]);
 
-  const fetchAdoptionRequests = async () => {
-    try {
-      const token = localStorage.getItem('token');
-      if (!token) {
-        window.location.href = '/';
-        throw new Error('Token not found');
-      }
-      
-      const response = await fetch('http://localhost:5000/api/forms/getAdoptionData', {
-        headers: {
-          'Content-Type': 'application/json',
-          'x-auth-token': token
-        }
-      });
-
-      if (!response.ok) {
-        throw new Error('Failed to fetch adoption requests');
-      }
-
-      const adoptionData = await response.json();
-
-      const filteredData = isNGOWorker 
-        ? adoptionData.filter(request => !request.ngoWorkerApproved && !request.adminApproved && !request.rejected)
-        : adoptionData.filter(request => request.ngoWorkerApproved && !request.adminApproved && !request.rejected);
-
-      setAdoptionRequests(filteredData);
-
-    } catch (error) {
-      console.error('Error fetching adoption requests:', error);
+const fetchAdoptionRequests = async () => {
+  try {
+    const token = localStorage.getItem('token');
+    if (!token) {
+      window.location.href = '/';
+      throw new Error('Token not found');
     }
-  };
+
+    const decodedToken = jwtDecode(token);
+    const userId = decodedToken.user.id;
+
+    const response = await fetch('http://localhost:5000/api/forms/getAdoptionData', {
+      headers: {
+        'Content-Type': 'application/json',
+        'x-auth-token': token
+      }
+    });
+
+    if (!response.ok) {
+      throw new Error('Failed to fetch adoption requests');
+    }
+
+    const adoptionData = await response.json();
+    console.log('Adoption Data:', adoptionData);
+
+    const filteredData = isNGOWorker 
+      ? adoptionData.filter(request => !request.ngoWorkerApproved && !request.adminApproved && !request.rejected && request.assignedWorker._id === userId)
+      : adoptionData.filter(request => request.ngoWorkerApproved && !request.adminApproved && !request.rejected);
+
+    setAdoptionRequests(filteredData);
+
+  } catch (error) {
+    console.error('Error fetching adoption requests:', error);
+  }
+};
+
 
   const handleViewDetails = (requestId) => {
     navigate(`/adoption-requests/${requestId}`);

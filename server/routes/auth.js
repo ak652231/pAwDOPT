@@ -5,9 +5,10 @@ const authController = require('../controllers/authController');
 const auth = require('../middleware/auth');
 
 router.post('/signup', authController.signUp);
-router.get('/userprofile',auth, authController.getUserById);
+router.get('/userprofile',auth, authController.getUserProfile);
 router.put('/edituser',auth,authController.EditUserById);
 router.get('/getusers',authController.getUsers);
+router.get('/:id',authController.getUserById);
 router.post(
   '/login',
   [

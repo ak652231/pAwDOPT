@@ -88,7 +88,7 @@ exports.login = async (req, res) => {
   }
 };
 
-exports.getUserById = async (req, res) => {
+exports.getUserProfile= async (req, res) => {
   try {
     const userId = req.user.id;
     const user = await User.findById(userId);
@@ -142,6 +142,24 @@ exports.EditUserById = async (req, res) => {
 exports.getUsers = async (req, res) => {
   try {
     const users = await User.find();
+
+    if (!users) {
+      return res.status(404).json({ msg: 'users not found' });
+    }
+
+    res.json(users);
+  } catch (err) {
+    console.error(err.message);
+    if (err.kind === 'ObjectId') {
+      return res.status(404).json({ msg: 'users not found' });
+    }
+    res.status(500).send('Server error');
+  }
+};
+exports.getUserById = async (req, res) => {
+  try {
+    const userId= req.params.id;
+    const users = await User.find({userId});
 
     if (!users) {
       return res.status(404).json({ msg: 'users not found' });

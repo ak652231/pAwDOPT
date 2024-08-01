@@ -1,7 +1,6 @@
 import React, { useState, useEffect } from 'react';
-import { useParams } from 'react-router-dom';
+import { useParams, useNavigate } from 'react-router-dom';
 import { jwtDecode } from 'jwt-decode';
-import { useNavigate } from 'react-router-dom';
 import Navbar from '../../components/Navbar/Navbar';
 import './AdoptionRequestDetails.css';
 
@@ -9,7 +8,7 @@ function AdoptionRequestDetails() {
   const [requestDetails, setRequestDetails] = useState(null);
   const { id } = useParams();
   const [isNGOWorker, setIsNGOWorker] = useState(false);
-  const navigate=useNavigate();
+  const navigate = useNavigate();
 
   useEffect(() => {
     const token = localStorage.getItem('token');
@@ -32,7 +31,7 @@ function AdoptionRequestDetails() {
     try {
       const token = localStorage.getItem('token'); 
       if (!token) {
-        window.location.href = '/';
+        navigate('/');
         throw new Error('Failed to fetch request details');
       }
 
@@ -53,32 +52,20 @@ function AdoptionRequestDetails() {
     try {
       const token = localStorage.getItem('token');
       if (!token) {
-        window.location.href = '/';
+        navigate('/');
         throw new Error('Authorization token is missing');
       }
-      if(isNGOWorker){
-        var response = await fetch(`http://localhost:5000/api/forms/approve/ngo/${id}`, {
-          method: 'PATCH',
-          headers: {
-            'Content-Type': 'application/json',
-            'Authorization': `Bearer ${token}`
-          }
-        });
-      } else{
-          var response = await fetch(`http://localhost:5000/api/forms/approve/admin/${id}`, {
-          method: 'PATCH',
-          headers: {
-            'Content-Type': 'application/json',
-            'Authorization': `Bearer ${token}`
-          }
-        });
-      }
-      
+      const response = await fetch(`http://localhost:5000/api/forms/approve/${isNGOWorker ? 'ngo' : 'admin'}/${id}`, {
+        method: 'PATCH',
+        headers: {
+          'Content-Type': 'application/json',
+          'Authorization': `Bearer ${token}`
+        }
+      });
 
       if (response.ok) {
-        alert('Adoption request approved by NGO worker');
-        navigate('/adoption-requests')
-        fetchRequestDetails();
+        alert(`Adoption request approved by ${isNGOWorker ? 'NGO worker' : 'Admin'}`);
+        navigate('/adoption-requests');
       } else {
         console.error('Failed to approve adoption request');
         alert('Failed to approve adoption request');
@@ -93,7 +80,7 @@ function AdoptionRequestDetails() {
     try {
       const token = localStorage.getItem('token');
       if (!token) {
-        window.location.href = '/';
+        navigate('/');
         throw new Error('Authorization token is missing');
       }
 
@@ -107,9 +94,7 @@ function AdoptionRequestDetails() {
 
       if (response.ok) {
         alert('Adoption request rejected');
-        window.location.href = '/adoption-requests';
-        navigate('/adoption-requests')
-        fetchRequestDetails();
+        navigate('/adoption-requests');
       } else {
         console.error('Failed to reject adoption request');
         alert('Failed to reject adoption request');
@@ -124,10 +109,8 @@ function AdoptionRequestDetails() {
     return <div className="loading">Loading...</div>;
   }
 
-  const { petId: pet, userId: user, ...formAnswers } = requestDetails;
-
-  const displayFields = Object.entries(formAnswers).filter(([key]) => 
-    !['_id', '__v', 'petId', 'userId', 'ngoWorkerApproved', 'adminApproved', 'rejected'].includes(key)
+  const displayFields = Object.entries(requestDetails).filter(([key]) => 
+    !['_id', '__v', 'petId', 'userId', 'ngoWorkerApproved', 'adminApproved', 'rejected', 'assignedWorker'].includes(key)
   );
 
   return (
@@ -140,23 +123,31 @@ function AdoptionRequestDetails() {
           <h2>Pet Details</h2>
           <div className="pet-info">
             <div className="pet-text">
-              <p><strong>Name:</strong> {pet.name}</p>
-              <p><strong>Type:</strong> {pet.type}</p>
-              <p><strong>Breed:</strong> {pet.breed}</p>
-              <p><strong>Health Info:</strong> {pet.healthInfo}</p>
-              <p><strong>Compatibility:</strong> {pet.compatibility}</p>
+              {requestDetails.petId && (
+                <>
+                  <p><strong>Name:</strong> {requestDetails.petId.name}</p>
+                  <p><strong>Type:</strong> {requestDetails.petId.type}</p>
+                  <p><strong>Breed:</strong> {requestDetails.petId.breed}</p>
+                  <p><strong>Health Info:</strong> {requestDetails.petId.healthInfo}</p>
+                  <p><strong>Compatibility:</strong> {requestDetails.petId.compatibility}</p>
+                </>
+              )}
             </div>
-            {pet.photos && pet.photos.length > 0 && (
-              <img src={pet.photos[0]} alt={pet.name} className="pet-image" />
+            {requestDetails.petId && requestDetails.petId.photos && requestDetails.petId.photos.length > 0 && (
+              <img src={requestDetails.petId.photos[0]} alt={requestDetails.petId.name} className="pet-image" />
             )}
           </div>
         </section>
 
         <section className="user-details">
           <h2>Requester Details</h2>
-          <p><strong>Name:</strong> {user.name}</p>
-          <p><strong>Email:</strong> {user.email}</p>
-          <p><strong>Number:</strong> {user.number}</p>
+          {requestDetails.userId && (
+            <>
+              <p><strong>Name:</strong> {requestDetails.userId.name}</p>
+              <p><strong>Email:</strong> {requestDetails.userId.email}</p>
+              <p><strong>Number:</strong> {requestDetails.userId.number}</p>
+            </>
+          )}
         </section>
 
         <section className="questionnaire">

@@ -1,97 +1,116 @@
-.adoption-page {
-    background-color: var(--color-light-green);
-    min-height: 100vh;
-    padding: 1.25rem;
-  }
-  
-  .adoption-content {
-    max-width: 75rem;
-    margin: 0 auto;
-    padding: 1.25rem;
-  }
-  
-  .myReq-page-title {
-    font-size: 3rem;
-    color: var(--color-dark-green);
-    text-align: center;
-    margin-bottom: 2rem;
-    font-weight: 700;
-    font-family: 'Nunito', sans-serif;
-  }
-  
-  .pet-list {
-    display: flex;
-    flex-direction: column;
-    gap: 2rem;
-  }
-  
+.adoption-content {
+  padding: 1.25rem;
+  transition: width 0.3s ease;
+  background-color: var(--color-light-green);
+  min-height: calc(100vh - 60px); 
+}
+.adoption-content.chat-open {
+  width: 60%;
+}
+
+.myReq-page-title {
+  font-size: 3rem;
+  color: var(--color-dark-green);
+  text-align: center;
+  margin-bottom: 2rem;
+  font-weight: 700;
+  font-family: 'Nunito', sans-serif;
+}
+
+.pet-list {
+  display: flex;
+  flex-direction: column;
+  gap: 2rem;
+}
+
+.pet-card {
+  display: flex;
+  border-radius: 1rem;
+  overflow: hidden;
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+  transition: transform 0.3s ease;
+}
+
+.pet-card:hover {
+  transform: translateY(-5px);
+}
+
+.pet-info {
+  flex: 1;
+  padding: 1.5rem;
+}
+
+.pet-name {
+  font-size: 1.8rem;
+  color: var(--color-dark-green);
+  margin-bottom: 0.5rem;
+  font-family: 'Nunito', sans-serif;
+  font-weight: 700;
+}
+
+.pet-breed,
+.pet-age,
+.pet-status {
+  font-size: 1.1rem;
+  color: #333;
+  margin-bottom: 0.5rem;
+  font-family: 'Nunito', sans-serif;
+}
+
+.pet-image {
+  width: 40%;
+}
+
+.pet-image img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+.status-approved {
+  background-color: #a3d0f3; 
+}
+
+.status-reviewed {
+  background-color: #fafa84;
+}
+
+.status-rejected {
+  background-color: #FFB6C1; 
+}
+
+.status-pending {
+  background-color: white;
+}
+
+.chat-button {
+  background-color: #3025ff;
+  color: white;
+  border: none;
+  padding: 0.5rem 1rem;
+  border-radius: 0.5rem;
+  font-size: 1rem;
+  cursor: pointer;
+  transition: background-color 0.3s ease;
+  font-family: 'Nunito', sans-serif;
+  margin-top: 0.5rem;
+}
+
+.chat-button:hover {
+  background-color: #5047ff;
+  color: white;
+}
+.adoption-content.chat-open {
+  width: calc(100% - 400px); 
+  margin-right: 400px; 
+}
+@media (max-width: 47.9375rem) {
   .pet-card {
-    display: flex;
-    border-radius: 1rem;
-    overflow: hidden;
-    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
-    transition: transform 0.3s ease;
+    flex-direction: column;
   }
-  
-  .pet-card:hover {
-    transform: translateY(-5px);
-  }
-  
-  .pet-info {
-    flex: 1;
-    padding: 1.5rem;
-  }
-  
-  .pet-name {
-    font-size: 1.8rem;
-    color: var(--color-dark-green);
-    margin-bottom: 0.5rem;
-    font-family: 'Nunito', sans-serif;
-    font-weight: 700;
-  }
-  
-  .pet-breed,
-  .pet-age,
-  .pet-status {
-    font-size: 1.1rem;
-    color: #333;
-    margin-bottom: 0.5rem;
-    font-family: 'Nunito', sans-serif;
-  }
-  
+
   .pet-image {
-    width: 40%;
-  }
-  
-  .pet-image img {
     width: 100%;
-    height: 100%;
-    object-fit: cover;
+    height: 200px;
   }
-  
-  .status-approved {
-    background-color: #90c5ee; 
-  }
-  
-  .status-reviewed {
-    background-color: #fafa84;
-  }
-  
-  .status-rejected {
-    background-color: #FFB6C1; 
-  }
-  
-  .status-pending {
-    background-color: white;
-  }
-  
-  @media (max-width: 47.9375rem) {
-    .pet-card {
-      flex-direction: column;
-    }
-  
-    .pet-image {
-      width: 100%;
-      height: 200px;
-    }
-  }
+}

@@ -1,12 +1,24 @@
 const AdoptionForm = require('../models/AdoptionForm'); 
-
+const User = require('../models/User');
+const mongoose=require('mongoose');
 exports.saveAdoptionForm = async (req, res) => {
   try {
     console.log('Request received:', req.body);
     const formData = req.body;
     formData.userId = req.user.id;
+
+    const worker = await User.findOne({ role: 'ngo_worker' }).sort({ assignedFormsCount: 1 });
+
+    if (!worker) {
+      return res.status(500).json({ message: 'No NGO workers available' });
+    }
+
+    formData.assignedWorker = worker._id;
+
     const newAdoptionForm = new AdoptionForm(formData);
     const savedForm = await newAdoptionForm.save();
+
+    await User.findByIdAndUpdate(worker._id, { $inc: { assignedFormsCount: 1 } });
 
     res.status(201).json(savedForm);
   } catch (error) {
@@ -14,12 +26,13 @@ exports.saveAdoptionForm = async (req, res) => {
     res.status(500).json({ message: 'Failed to submit form' });
   }
 };
-
 exports.getAdoptionData = async (req, res) => {
   try {
-    const adoptionForms = await AdoptionForm.find({})
+    const workerId = req.user.id;
+    const adoptionForms = await AdoptionForm.find()
       .populate('userId') 
-      .populate('petId'); 
+      .populate('petId')
+      .populate('assignedWorker'); 
 
     res.json(adoptionForms);
   } catch (err) {
@@ -30,7 +43,8 @@ exports.getAdoptionData = async (req, res) => {
 exports.getAdoptionFormById= async (req,res)=>{
   try{
     const Form=await AdoptionForm.findById(req.params.id).populate('userId') 
-    .populate('petId');
+    .populate('petId')
+    .populate('assignedWorker');
     res.json(Form);
   } catch (err) {
     console.error(err.message);
@@ -97,7 +111,7 @@ exports.getAdoptionRequestsByUserId = async (req, res) => {
   const userId = req.user.id;
 
   try {
-    const adoptionRequests = await AdoptionForm.find({ userId: userId }).populate('petId');
+    const adoptionRequests = await AdoptionForm.find({ userId: userId }).populate('petId').populate('assignedWorker');
 
     res.json(adoptionRequests);
   } catch (err) {

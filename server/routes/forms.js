@@ -4,7 +4,7 @@ const { saveAdoptionForm ,getAdoptionData,getAdoptionFormById,approveByNGOWorker
 const auth = require('../middleware/auth');
 
 router.post('/', auth,saveAdoptionForm);
-router.get('/getAdoptionData',getAdoptionData);
+router.get('/getAdoptionData',auth,getAdoptionData);
 router.get('/myReq',auth,getAdoptionRequestsByUserId);
 router.get('/:id', getAdoptionFormById);
 router.patch('/approve/ngo/:id', approveByNGOWorker);

@@ -18,6 +18,7 @@ const AdoptionFormSchema = new Schema({
   ngoWorkerApproved: { type: Boolean, default: false },
   adminApproved: { type: Boolean, default: false },
   rejected: { type: Boolean, default: false },
+  assignedWorker: { type: Schema.Types.ObjectId, ref: 'User' },
 });
 
 module.exports = mongoose.model('AdoptionForm', AdoptionFormSchema);

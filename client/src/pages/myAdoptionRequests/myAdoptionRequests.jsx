@@ -1,9 +1,12 @@
 import React, { useState, useEffect } from 'react';
 import Navbar from '../../components/Navbar/Navbar';
-import './myAdoptionRequests.css'; 
+import ChatBox from '../../components/ChatBox/ChatBox';
+import './myAdoptionRequests.css';
 
 function MyAdoptionRequests() {
   const [myRequests, setMyRequests] = useState([]);
+  const [selectedRequest, setSelectedRequest] = useState(null);
+  const [showChat, setShowChat] = useState(false);
 
   useEffect(() => {
     fetchRequests();
@@ -32,16 +35,26 @@ function MyAdoptionRequests() {
   };
 
   const getStatusInfo = (request) => {
+    if (request.rejected) return { text: 'Rejected', class: 'status-rejected' };
     if (request.adminApproved) return { text: 'Approved', class: 'status-approved' };
     if (request.ngoWorkerApproved) return { text: 'Request reviewed, we will contact you for further process', class: 'status-reviewed' };
-    if (request.rejected) return { text: 'Rejected', class: 'status-rejected' };
     return { text: 'Pending', class: 'status-pending' };
+  };
+
+  const handleChatClick = (request) => {
+    setSelectedRequest(request);
+    setShowChat(true);
+  };
+
+  const closeChat = () => {
+    setShowChat(false);
+    setSelectedRequest(null);
   };
 
   return (
     <div className="adoption-page">
-      <Navbar />
-      <div className="adoption-content">
+      <div className={`adoption-content ${showChat ? 'chat-open' : ''}`}>
+        <Navbar />
         <h1 className="myReq-page-title">Your Adoption Requests</h1>
 
         <div className="pet-list">
@@ -54,6 +67,11 @@ function MyAdoptionRequests() {
                   <p className="pet-breed">{request.petId.type} - {request.petId.breed}</p>
                   <p className="pet-age">Age: {request.petId.age}</p>
                   <p className="pet-status">Status: {statusInfo.text}</p>
+                  {request.adminApproved && (
+                    <button className="chat-button" onClick={() => handleChatClick(request)}>
+                      Chat with us
+                    </button>
+                  )}
                 </div>
                 <div className="pet-image">
                   {request.petId.photos && request.petId.photos.length > 0 && (
@@ -65,6 +83,9 @@ function MyAdoptionRequests() {
           })}
         </div>
       </div>
+      {showChat && selectedRequest && (
+        <ChatBox request={selectedRequest} onClose={closeChat} />
+      )}
     </div>
   );
 }
