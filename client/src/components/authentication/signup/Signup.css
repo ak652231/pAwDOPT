@@ -118,3 +118,70 @@
   .signup-footer a:hover {
     text-decoration: underline;
   }
+  .phone-group {
+    position: relative;
+  }
+  
+  .phone-input-container {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+  }
+  
+  .send-otp-button,
+  .verify-otp-button {
+    background-color: var(--color-mid-green);
+    color: white;
+    border: none;
+    padding: 10px 15px;
+    border-radius: 5px;
+    font-size: 0.9rem;
+    font-weight: 600;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+  }
+  
+  .send-otp-button:hover,
+  .verify-otp-button:hover {
+    background-color: var(--color-dark-green);
+    transform: translateY(-2px);
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+  }
+  
+  .send-otp-button:disabled,
+  .verify-otp-button:disabled {
+    background-color: #a0a0a0;
+    cursor: not-allowed;
+    transform: none;
+    box-shadow: none;
+  }
+  
+  .otp-input-container {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    margin-top: 10px;
+  }
+  
+  .otp-input {
+    flex-grow: 1;
+  }
+  
+  .otp-status {
+    font-size: 0.9rem;
+    font-weight: 600;
+    padding: 5px 10px;
+    border-radius: 15px;
+    text-align: center;
+  }
+  
+  .otp-sent {
+    background-color: #e6f7ff;
+    color: #1890ff;
+  }
+  
+  .otp-verified {
+    background-color: #f6ffed;
+    color: #52c41a;
+  }

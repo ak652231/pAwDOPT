@@ -1,6 +1,55 @@
 const bcrypt = require('bcryptjs');
 const jwt = require('jsonwebtoken');
 const User = require('../models/User');
+const otpGenerator = require('otp-generator');
+const twilio = require('twilio');
+
+const twilioClient = twilio(process.env.TWILIO_SID, process.env.TWILIO_TOKEN);
+
+const otpStorage = new Map();
+
+exports.sendOTP = async (req, res) => {
+  const { number } = req.body;
+
+  try {
+    const user = await User.findOne({ number: number });
+
+    if (user) {
+      return res.status(400).json({ msg: 'User already exists with this phone number' });
+    }
+    const otp = otpGenerator.generate(6, { upperCase: false, specialChars: false, alphabets: false });
+    otpStorage.set(number, otp);
+
+    await twilioClient.messages.create({
+      body: `Your OTP for signup is: ${otp}`,
+      from: process.env.TWILIO_NUMBER,
+      to: `+91${number}`
+    });
+
+    res.status(200).json({ message: 'OTP sent successfully' });
+  } catch (err) {
+    console.error('Error sending OTP:', err.message);
+    res.status(500).json({ message: 'Failed to send OTP' });
+  }
+};
+
+exports.verifyOTP = async (req, res) => {
+  const { number, otp } = req.body;
+
+  try {
+    const storedOTP = otpStorage.get(number);
+
+    if (storedOTP && storedOTP === otp) {
+      otpStorage.delete(number);
+      res.status(200).json({ message: 'OTP verified successfully' });
+    } else {
+      res.status(400).json({ message: 'Invalid OTP' });
+    }
+  } catch (err) {
+    console.error(err.message);
+    res.status(500).send('Server error');
+  }
+};
 
 exports.signUp = async (req, res) => {
   const { name, email, number, address, gender, age, role, password } = req.body;
@@ -11,7 +60,6 @@ exports.signUp = async (req, res) => {
     if (user) {
       return res.status(400).json({ msg: 'User already exists' });
     }
-
     user = new User({
       name,
       email,
@@ -108,12 +156,10 @@ exports.getUserProfile= async (req, res) => {
 };
 exports.EditUserById = async (req, res) => {
   console.log("Received update data:", req.body);
-  const { email, name, number, address, gender, age,role } = req.body;
+  const { name, address, gender, age,role } = req.body;
 
   const userFields = {};
-  if (email) userFields.email = email;
   if (name) userFields.name = name;
-  if (number) userFields.number = number;
   if (age) userFields.age = age;
   if (address) userFields.address = address;
   if (gender) userFields.gender = gender;

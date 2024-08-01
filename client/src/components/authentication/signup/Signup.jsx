@@ -12,25 +12,83 @@ function Signup() {
     gender: '',
     role: '',
     password: '',
+    otp: '',
   });
   const [submitting, setSubmitting] = useState(false);
+  const [otpSent, setOtpSent] = useState(false);
+  const [otpVerified, setOtpVerified] = useState(false);
 
   const handleInputChange = (e) => {
     const { name, value } = e.target;
     setFormData({ ...formData, [name]: value });
   };
 
+  const sendOTP = async () => {
+    if (!formData.number) {
+      alert('Please enter a phone number');
+      return;
+    }
+
+    try {
+      const response = await fetch('http://localhost:5000/api/auth/send-otp', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({ number: formData.number }),
+      });
+
+      const data = await response.json();
+
+      if (response.ok) {
+        setOtpSent(true);
+        alert('OTP sent successfully');
+      } else {
+        alert(data.message || 'Failed to send OTP. Please try again.');
+      }
+    } catch (error) {
+      console.error('Error sending OTP:', error);
+      alert('An error occurred. Please try again later.');
+    }
+  };
+
+  const verifyOTP = async () => {
+    try {
+      const response = await fetch('http://localhost:5000/api/auth/verify-otp', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({ number: formData.number, otp: formData.otp }),
+      });
+
+      if (response.ok) {
+        setOtpVerified(true);
+        alert('OTP verified successfully');
+      } else {
+        alert('Invalid OTP. Please try again.');
+      }
+    } catch (error) {
+      console.error('Error verifying OTP:', error);
+      alert('An error occurred. Please try again later.');
+    }
+  };
+
   const handleSubmit = async (e) => {
     e.preventDefault();
+    if (!otpVerified) {
+      alert('Please verify your phone number first');
+      return;
+    }
     setSubmitting(true);
 
     if (formData.role === 'ngo_worker' && !formData.email.endsWith('@ngo.com')) {
-      alert('You are not NGO worker,contact NGO Admin!');
+      alert('You are not NGO worker, contact NGO Admin!');
       setSubmitting(false);
       return;
     }
     if (formData.role === 'ngo_admin' && !formData.email.endsWith('@ngoAdmin.com')) {
-      alert('You are not NGO worker,contact NGO Admin!');
+      alert('You are not NGO worker, contact NGO Admin!');
       setSubmitting(false);
       return;
     }
@@ -91,17 +149,48 @@ function Signup() {
               required
             />
           </div>
-          <div className="form-group">
+          <div className="form-group phone-group">
             <label htmlFor="number">Phone Number</label>
-            <input
-              type="tel"
-              id="number"
-              name="number"
-              value={formData.number}
-              onChange={handleInputChange}
-              required
-            />
+            <div className="phone-input-container">
+              <input
+                type="tel"
+                id="number"
+                name="number"
+                value={formData.number}
+                onChange={handleInputChange}
+                required
+              />
+              <button
+                type="button"
+                onClick={sendOTP}
+                className="send-otp-button"
+                disabled={otpSent}
+              >
+                {otpSent ? 'OTP Sent' : 'Send OTP'}
+              </button>
+            </div>
           </div>
+          {otpSent && (
+            <div className="form-group">
+              <label htmlFor="otp">Enter OTP</label>
+              <input
+                type="text"
+                id="otp"
+                name="otp"
+                value={formData.otp}
+                onChange={handleInputChange}
+                required
+              />
+              <button
+                type="button"
+                onClick={verifyOTP}
+                className="verify-otp-button"
+                disabled={otpVerified}
+              >
+                {otpVerified ? 'Verified' : 'Verify OTP'}
+              </button>
+            </div>
+          )}
           <div className="form-group">
             <label htmlFor="address">Address</label>
             <input
@@ -173,7 +262,7 @@ function Signup() {
               I accept the <a href="#">Terms and Conditions</a>
             </label>
           </div>
-          <button type="submit" className="signup-button" disabled={submitting}>
+          <button type="submit" className="signup-button" disabled={submitting || !otpVerified}>
             {submitting ? 'Creating Account...' : 'Create Account'}
           </button>
         </form>

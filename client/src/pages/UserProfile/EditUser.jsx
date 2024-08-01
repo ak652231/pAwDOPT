@@ -60,7 +60,7 @@ function EditUser() {
       if (!response.ok) {
         throw new Error('Failed to update user details');
       }
-      navigate('/userprofile');
+      navigate('/user-profile');
     } catch (error) {
       console.error('Error updating user details:', error);
     }
@@ -87,30 +87,6 @@ function EditUser() {
                 />
               </div>
               <div className="form-group">
-                <label htmlFor="email">Email</label>
-                <input
-                  type="email"
-                  id="email"
-                  name="email"
-                  value={user.email}
-                  onChange={handleInputChange}
-                  required
-                />
-              </div>
-              <div className="form-group">
-                <label htmlFor="number">Phone Number</label>
-                <input
-                  type="tel"
-                  id="number"
-                  name="number"
-                  value={user.number}
-                  onChange={handleInputChange}
-                  required
-                />
-              </div>
-            </div>
-            <div className="form-column">
-              <div className="form-group">
                 <label htmlFor="gender">Gender</label>
                 <select
                   id="gender"
@@ -125,6 +101,9 @@ function EditUser() {
                   <option value="other">Other</option>
                 </select>
               </div>
+            </div>
+            <div className="form-column">
+              
               <div className="form-group">
                 <label htmlFor="age">Age</label>
                 <input

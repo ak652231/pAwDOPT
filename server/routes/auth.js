@@ -9,6 +9,8 @@ router.get('/userprofile',auth, authController.getUserProfile);
 router.put('/edituser',auth,authController.EditUserById);
 router.get('/getusers',authController.getUsers);
 router.get('/:id',authController.getUserById);
+router.post('/send-otp', authController.sendOTP);
+router.post('/verify-otp', authController.verifyOTP);
 router.post(
   '/login',
   [

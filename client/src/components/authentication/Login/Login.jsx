@@ -5,6 +5,7 @@ import './Login.css';
 function Login() {
   const [formData, setFormData] = useState({
     email: '',
+    number: '',
     password: ''
   });
 
@@ -13,6 +14,10 @@ function Login() {
   const handleInputChange = (e) => {
     const { name, value } = e.target;
     setFormData({ ...formData, [name]: value });
+  };
+
+  const handlePhoneChange = (value) => {
+    setFormData({ ...formData, number: value });
   };
 
   const handleSubmit = async (e) => {

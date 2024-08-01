@@ -1,11 +1,11 @@
 import React, { useState } from 'react';
 import { useParams, useNavigate } from 'react-router-dom';
+import { jwtDecode } from 'jwt-decode';
 import './AdForm.css';
 
 function AdForm() {
   const { id } = useParams(); 
   const navigate = useNavigate();
-
   const [formData, setFormData] = useState({
     userId: '',
     petId: id,
@@ -21,7 +21,6 @@ function AdForm() {
     financialPreparation: '',
     lifetimeCommitment: ''
   });
-
   const handleInputChange = (e) => {
     const { name, value } = e.target;
     setFormData({ ...formData, [name]: value });
@@ -42,7 +41,22 @@ function AdForm() {
       if (!response.ok) {
         throw new Error('Failed to submit form');
       }
-      alert('Form submitted successfully!');
+      const smsResponse = await fetch('http://localhost:5000/api/sms/send-adoption-sms', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+          'x-auth-token': token
+        },
+        body: JSON.stringify({
+          petId: id
+        }),
+      });
+      
+      if (!smsResponse.ok) {
+        console.error('Failed to send SMS');
+      }
+  
+      alert('Form submitted successfully! You will receive a confirmation SMS shortly.');
       setFormData({
         hoursAlone: '',
         householdAgreement: '',

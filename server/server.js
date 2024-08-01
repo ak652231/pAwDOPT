@@ -25,6 +25,7 @@ app.use('/api/pets', require('./routes/pet'));
 app.use('/api/adoptedPets', require('./routes/adoptedPets'));
 app.use('/api/forms', require('./routes/forms'));
 app.use('/api/chat', require('./routes/chat')(io));
+app.use('/api/sms', require('./routes/sms'));
 
 require('./controllers/socketController')(io);
 
