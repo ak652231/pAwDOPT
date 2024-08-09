@@ -1,150 +1,164 @@
-.adoption-request-details {
-    background-color: #a3f79d;
-    min-height: 100vh;
-    padding: 2rem;
-    font-family: 'Nunito', sans-serif;
-  }
-  
-  .adoption-request-details .details-content {
-    max-width: 900px;
-    margin: 0 auto;
-    background-color: white;
-    border-radius: 15px;
-    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
-    padding: 2rem;
-  }
-  
-  .adoption-request-details .page-title {
-    font-size: 2.5rem;
-    color: #024023;
-    text-align: center;
-    margin-bottom: 2rem;
-    font-weight: 700;
-  }
-  
-  .adoption-request-details section {
-    margin-bottom: 2rem;
-    background-color: #f0fff0;
-    border-radius: 10px;
-    padding: 1.5rem;
-    border: 1px solid #50e446;
-  }
-  
-  .adoption-request-details h2 {
-    font-size: 1.8rem;
-    color: #024023;
-    margin-bottom: 1rem;
-    font-weight: 700;
-    border-bottom: 2px solid #50e446;
-    padding-bottom: 0.5rem;
-  }
-  
-  .adoption-request-details p {
-    font-size: 1rem;
-    color: #333;
-    margin-bottom: 0.5rem;
-    line-height: 1.6;
-  }
-  
-  .adoption-request-details .pet-info {
-    display: flex;
-    justify-content: space-between;
-    align-items: flex-start;
-  }
-  
-  .adoption-request-details .pet-text {
-    flex: 1;
-    margin-right: 2rem;
-  }
-  
-  .adoption-request-details .pet-image {
-    max-width: 250px;
-    height: auto;
-    border-radius: 10px;
-    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
-  }
-  
-  .adoption-request-details .question-answers {
-    display: grid;
-    grid-template-columns: 1fr 1fr;
-    gap: 1rem;
-  }
-  
-  .adoption-request-details .qa-item {
-    background-color: var(--color-dark-green);
-    padding: 1rem;
-    border-radius: 8px;
-    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.05);
-  }
-  
-  .adoption-request-details .question {
-    font-weight: 700;
-    color: var(--color-mid-green);
-    margin-bottom: 0.25rem;
-    font-size: 1.1rem;
+:root {
+  --color-dark-green: #024023;
+  --color-light-green: #a3f79d;
+  --color-mid-green: #50e446;
+}
 
+.adoption-request-details {
+  background-color: var(--color-light-green);
+  min-height: 100vh;
+  padding: 2rem;
+  font-family: 'Nunito', sans-serif;
+}
+
+.adoption-request-details .details-content {
+  max-width: 56.25rem;
+  margin: 0 auto;
+  background-color: white;
+  border-radius: 0.9375rem;
+  box-shadow: 0 0.625rem 1.875rem rgba(0, 0, 0, 0.1);
+  padding: 2rem;
+}
+
+.adoption-request-details .page-title {
+  font-size: 2.5rem;
+  color: var(--color-dark-green);
+  text-align: center;
+  margin-bottom: 2rem;
+  font-weight: 700;
+}
+
+.adoption-request-details section {
+  margin-bottom: 2rem;
+  background-color: #f0fff0;
+  border-radius: 0.625rem;
+  padding: 1.5rem;
+  border: 0.0625rem solid var(--color-mid-green);
+}
+
+.adoption-request-details h2 {
+  font-size: 1.8rem;
+  color: var(--color-dark-green);
+  margin-bottom: 1rem;
+  font-weight: 700;
+  border-bottom: 0.125rem solid var(--color-mid-green);
+  padding-bottom: 0.5rem;
+}
+
+.adoption-request-details p {
+  font-size: 1rem;
+  color: #333;
+  margin-bottom: 0.5rem;
+  margin-top: 1rem;
+  line-height: 1.6;
+}
+
+.adoption-request-details .pet-info {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+}
+
+.adoption-request-details .pet-text {
+  flex: 1;
+  margin-right: 2rem;
+}
+
+.adoption-request-details .pet-image {
+  max-width: 15.625rem;
+  height: auto;
+  border-radius: 0.625rem;
+  box-shadow: 0 0.25rem 0.5rem rgba(0, 0, 0, 0.1);
+}
+
+.adoption-request-details .question-answers {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 1rem;
+}
+
+.adoption-request-details .qa-item {
+  background-color: var(--color-dark-green);
+  padding: 1rem;
+  border-radius: 0.5rem;
+  box-shadow: 0 0.125rem 0.25rem rgba(0, 0, 0, 0.05);
+}
+
+.adoption-request-details .question {
+  font-weight: 700;
+  color: var(--color-mid-green);
+  margin-bottom: 0.25rem;
+  font-size: 1.1rem;
+margin-top: 0.5rem;
+}
+
+.adoption-request-details .answer {
+  color: var(--color-light-green);
+}
+.adoption-request-details .loading {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 100vh;
+  font-size: 1.5rem;
+  color: var(--color-mid-green);
+}
+
+.action-buttons {
+  display: flex;
+  justify-content: center;
+  gap: 1rem;
+  margin-top: 2rem;
+}
+
+.action-buttons button {
+  padding: 0.75rem 1.5rem;
+  font-size: 1rem;
+  font-weight: 700;
+  border: none;
+  border-radius: 0.625rem;
+  cursor: pointer;
+  transition: background-color 0.3s ease, transform 0.2s ease;
+  font-family: 'Nunito', sans-serif;
+  text-transform: uppercase;
+  letter-spacing: 0.03125rem;
+}
+
+.approve-btn {
+  background-color: var(--color-mid-green);
+  color: var(--color-dark-green);
+}
+
+.approve-btn:hover {
+  background-color: #3ac331;
+  transform: translateY(-0.125rem);
+}
+
+.reject-btn {
+  background-color: #ff4d4d;
+  color: white;
+}
+
+.reject-btn:hover {
+  background-color: #e63939;
+  transform: translateY(-0.125rem);
+}
+
+.action-buttons button:active {
+  transform: translateY(0.0625rem);
+}
+
+@media (max-width: 48rem) {
+  .adoption-request-details .pet-info {
+    flex-direction: column;
   }
-  .adoption-request-details p {
+
+  .adoption-request-details .pet-image {
     margin-top: 1rem;
+    max-width: 100%;
   }
-  
-  .adoption-request-details .answer {
-    color: var(--color-light-green);
+
+  .adoption-request-details .question-answers {
+    grid-template-columns: 1fr;
   }
-  
-  .adoption-request-details .loading {
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    height: 100vh;
-    font-size: 1.5rem;
-    color: #50e446;
-  }
-  .adoption-request-details .action-buttons {
-    display: flex;
-    justify-content: center;
-    gap: 1rem;
-    margin-top: 2rem;
-  }
-  
-  .adoption-request-details .action-buttons button {
-    padding: 0.75rem 1.5rem;
-    font-size: 1rem;
-    font-weight: 700;
-    border: none;
-    border-radius: 5px;
-    cursor: pointer;
-    transition: background-color 0.3s ease;
-  }
-  
-  .adoption-request-details .approve-btn {
-    background-color: #50e446; 
-    color: white;
-  }
-  
-  .adoption-request-details .approve-btn:hover {
-    background-color: #3ac331;
-  }
-  
-  .adoption-request-details .reject-btn {
-    background-color: #ff4d4d; 
-    color: white;
-  }
-  
-  .adoption-request-details .reject-btn:hover {
-    background-color: #e63939;
-  }
-  @media (max-width: 768px) {
-    .adoption-request-details .pet-info {
-      flex-direction: column;
-    }
-  
-    .adoption-request-details .pet-image {
-      margin-top: 1rem;
-      max-width: 100%;
-    }
-  
-    .adoption-request-details .question-answers {
-      grid-template-columns: 1fr;
-    }
-  }
+}

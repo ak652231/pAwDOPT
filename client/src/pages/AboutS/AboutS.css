@@ -14,61 +14,7 @@ html {
   background-color: var(--color-light-green);
   min-height: 100vh;
   padding: 1.25rem;
-}
-
-.navbar {
-  margin-top: 1.25rem;
-  margin-bottom: 2.5rem;
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  padding: 0.625rem 1.875rem;
-  background-color: var(--color-dark-green);
-  border-radius: 3.125rem;
-  max-width: 75rem;
-  margin-left: auto;
-  margin-right: auto;
-}
-
-.navbar-left {
-  display: flex;
-  align-items: center;
-}
-
-.logo {
-  max-width: 3.125rem;
-  height: auto;
-  margin-right: 0.625rem;
-}
-
-.logo-text {
-  font-family: 'Righteous', sans-serif;
-  font-size: 1.5rem;
-  color: var(--color-light-green);
-}
-
-.nav-links {
-  display: flex;
-  list-style: none;
-  gap: 1.25rem;
-}
-
-.nav-links a {
-  color: var(--color-light-green);
-  text-decoration: none;
-  font-family: 'Nunito', sans-serif;
-  font-weight: 600;
-  transition: color 0.3s ease;
-}
-
-.navbar-right button {
-  font-family: 'Nunito', sans-serif;
-  font-weight: 700;
-  padding: 0.5rem 1rem;
-  border: none;
-  border-radius: 1.25rem;
-  cursor: pointer;
-  transition: all 0.3s ease;
+  overflow-x: hidden;
 }
 
 .about-content {
@@ -104,11 +50,12 @@ html {
   height: auto;
   border-radius: 0.625rem;
 }
-
+.shelter{
+  padding: 2rem;
+}
 .team-members {
   display: flex;
   justify-content: space-between;
-  flex-wrap: wrap;
   gap: 2rem;
   margin-top: 2rem;
 }
@@ -121,8 +68,8 @@ html {
 }
 
 .team-member img {
-  width: 9.375rem;
-  height: 9.375rem;
+  width: 12.375rem;
+  height: 12.375rem;
   object-fit: cover;
   border-radius: 50%;
   margin-bottom: 1rem;
@@ -155,13 +102,16 @@ html {
   font-size: 1rem;
   margin-bottom: 1rem;
 }
-.member-intro{
+
+.member-intro {
   font-weight: 400;
 }
-.member-name{
+
+.member-name {
   font-weight: 600;
   font-size: 1.2rem;
 }
+
 @media (min-width: 48rem) {
   .text {
     flex-direction: row;
@@ -173,21 +123,6 @@ html {
 }
 
 @media (max-width: 47.9375rem) {
-  .navbar {
-    flex-direction: column;
-    padding: 1.25rem;
-  }
-
-  .navbar-left, .navbar-center, .navbar-right {
-    width: 100%;
-    margin-bottom: 0.625rem;
-  }
-
-  .nav-links {
-    flex-direction: column;
-    align-items: center;
-  }
-
   .page-title {
     font-size: 2.5rem;
   }
@@ -195,4 +130,85 @@ html {
   .section-title {
     font-size: 1.8rem;
   }
+
+  .team-members {
+    flex-direction: column;
+    align-items: center;
+  }
+
+  .team-member {
+    width: 100%;
+    max-width: 300px;
+  }
 }
+
+.fade-in {
+  opacity: 0;
+  animation: fadeIn 1s ease-in-out forwards;
+}
+
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
+  }
+}
+
+.slide-in-left {
+  opacity: 0;
+  transform: translateX(-50px);
+  animation: slideInLeft 0.8s ease-in-out forwards;
+}
+
+@keyframes slideInLeft {
+  from {
+    opacity: 0;
+    transform: translateX(-50px);
+  }
+  to {
+    opacity: 1;
+    transform: translateX(0);
+  }
+}
+
+.slide-in-right {
+  opacity: 0;
+  transform: translateX(50px);
+  animation: slideInRight 0.8s ease-in-out forwards;
+}
+
+@keyframes slideInRight {
+  from {
+    opacity: 0;
+    transform: translateX(50px);
+  }
+  to {
+    opacity: 1;
+    transform: translateX(0);
+  }
+}
+
+@keyframes popIn {
+  0% {
+    opacity: 0;
+    transform: scale(0.5);
+  }
+  70% {
+    transform: scale(1.1);
+  }
+  100% {
+    opacity: 1;
+    transform: scale(1);
+  }
+}
+
+.team-member.animate {
+  animation: popIn 0.6s cubic-bezier(0.175, 0.885, 0.32, 1.275) forwards;
+  opacity: 0;
+}
+
+.team-member:nth-child(1) { animation-delay: 0.1s; }
+.team-member:nth-child(2) { animation-delay: 0.3s; }
+.team-member:nth-child(3) { animation-delay: 0.5s; }

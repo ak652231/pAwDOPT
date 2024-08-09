@@ -1,11 +1,17 @@
-import React, { useState } from 'react';
+import React, { useState ,useEffect} from 'react';
 import { useParams, useNavigate } from 'react-router-dom';
 import { jwtDecode } from 'jwt-decode';
+import EventMessage from '../../components/EventMessage/EventMessage';
 import './AdForm.css';
+
+const SUCCESS_MESSAGE = "Form submitted successfully! You will receive a confirmation SMS shortly.";
+const LOGIN_REQUIRED_MESSAGE = "Please login before raising an adoption request.";
+const FORM_SUBMISSION_ERROR_MESSAGE = "An error occurred while submitting the form. Please try again.";
 
 function AdForm() {
   const { id } = useParams(); 
   const navigate = useNavigate();
+  const [eventMessage, setEventMessage] = useState({ message: '', status: '', isOpen: false });
   const [formData, setFormData] = useState({
     userId: '',
     petId: id,
@@ -21,6 +27,19 @@ function AdForm() {
     financialPreparation: '',
     lifetimeCommitment: ''
   });
+  const [showSuccessModal, setShowSuccessModal] = useState(false);
+  const [isSubmitting, setIsSubmitting] = useState(false);
+  const [isLoggedIn, setIsLoggedIn] = useState(false);
+
+  useEffect(() => {
+    const token = localStorage.getItem('token');
+    if (!token) {
+      setEventMessage({ message: LOGIN_REQUIRED_MESSAGE, status: 'Error!', isOpen: true });
+    } else {
+      setIsLoggedIn(true);
+    }
+  }, []);
+
   const handleInputChange = (e) => {
     const { name, value } = e.target;
     setFormData({ ...formData, [name]: value });
@@ -28,8 +47,10 @@ function AdForm() {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
+    setIsSubmitting(true);
     try {
       const token = localStorage.getItem('token');
+
       const response = await fetch('http://localhost:5000/api/forms/', { 
         method: 'POST',
         headers: {
@@ -56,7 +77,7 @@ function AdForm() {
         console.error('Failed to send SMS');
       }
   
-      alert('Form submitted successfully! You will receive a confirmation SMS shortly.');
+      setEventMessage({ message: SUCCESS_MESSAGE, status: 'Success!', isOpen: true });
       setFormData({
         hoursAlone: '',
         householdAgreement: '',
@@ -71,10 +92,22 @@ function AdForm() {
         lifetimeCommitment: '',
         petId: id
       });
-      navigate('/');
     } catch (error) {
       console.error('Error submitting form:', error);
-      alert('Please Login before raising adoption request.');
+      setEventMessage({ message: FORM_SUBMISSION_ERROR_MESSAGE , status: 'Error!', isOpen: true ,});
+    }finally {
+      setIsSubmitting(false);
+    }
+
+  };
+
+  const handleCloseMessage = () => {
+    setEventMessage({ ...eventMessage, isOpen: false });
+    if (eventMessage.status === 'Success!' ) {
+      navigate('/');
+    }
+    else{
+      navigate('/login');
     }
   };
 
@@ -238,8 +271,21 @@ function AdForm() {
           </select>
         </div>
 
-        <button type="submit" className="submit-button">Submit</button>
+        <button 
+  type="submit" 
+  className="submit-button" 
+  disabled={isSubmitting}
+>
+  {isSubmitting ? 'Submitting...' : 'Submit'}
+</button>
       </form>
+      <EventMessage 
+        isOpen={eventMessage.isOpen} 
+        onClose={handleCloseMessage}
+        message={eventMessage.message}
+        statuss={eventMessage.status}
+        buttonText={eventMessage.status === 'Success!' ? 'Home' : 'Close'}
+      />
     </div>
   );
 }

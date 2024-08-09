@@ -1,6 +1,10 @@
 {
   "dependencies": {
+    "react-spring": "^9.7.4",
     "socket.io": "^4.7.5",
     "socket.io-client": "^4.7.5"
+  },
+  "devDependencies": {
+    "vite-plugin-node-polyfills": "^0.22.0"
   }
 }

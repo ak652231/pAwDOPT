@@ -1,5 +1,9 @@
 import React from 'react'
 import Card from './Card';
+import benefit1 from '../../assets/benefit1.webp'
+import benefit2 from '../../assets/benefit2.jpg'
+import benefit3 from '../../assets/benefit3.jpg'
+import benefit4 from '../../assets/benefit4.jpeg'
 import "./Why.css";
 function Why() {
     return (
@@ -11,17 +15,17 @@ function Why() {
 
                 
                 
-                <Card source="https://images.squarespace-cdn.com/content/v1/61042cbcc245122bc58574b7/0443839f-b9f5-4130-a6ce-79a9fcb7edbe/paw+pads.jpeg"
+                <Card source={benefit1}
                     header="Health benefits"
                     para="Pets can improve your physical and mental health. They encourage physical activity, reduce stress, and provide companionship, leading to a happier and healthier lifestyle."/>
-                <Card source="https://images.squarespace-cdn.com/content/v1/61042cbcc245122bc58574b7/0443839f-b9f5-4130-a6ce-79a9fcb7edbe/paw+pads.jpeg"
+                <Card source={benefit2}
                     header="Saving Lives"
                     para="By adopting a pet, you are saving a life. Many animals in shelters are at risk of being euthanized due to overcrowding and limited resources. Adopting gives these animals a second chance at life and a loving home."/>
-                <Card source="https://images.squarespace-cdn.com/content/v1/61042cbcc245122bc58574b7/0443839f-b9f5-4130-a6ce-79a9fcb7edbe/paw+pads.jpeg"
+                <Card source={benefit3}
                     header="Finding a Loving Companion"
                     para="Shelters have a wide variety of pets, each with unique personalities and backgrounds. You are likely to find a pet that perfectly matches your lifestyle and personality.
 "/>
-                <Card  source="https://images.squarespace-cdn.com/content/v1/61042cbcc245122bc58574b7/0443839f-b9f5-4130-a6ce-79a9fcb7edbe/paw+pads.jpeg"
+                <Card  source={benefit4}
                     header="Cost-Effective"
                     para=" Adoption fees are often lower than the cost of purchasing a pet from a breeder or pet store. Additionally, adopted pets are usually spayed/neutered, vaccinated, and microchipped, saving you additional costs."/>
             </div>

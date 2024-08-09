@@ -1,23 +1,27 @@
 import React, { useState } from 'react';
 import { Carousel } from 'react-responsive-carousel';
-import 'react-responsive-carousel/lib/styles/carousel.min.css'; // Import the styles for the carousel
+import happy1 from '../../assets/happy1.jpg'
+import happy2 from '../../assets/happy2.jpg'
+import happy3 from '../../assets/happy3.png'
+import 'react-responsive-carousel/lib/styles/carousel.min.css'; 
+import "./Testimonials.css";
 
 function Carousell() {
     const slides = [
         {
           name: 'John Doe',
           text: 'Adopting my furry friend from pAwDOPT was the best decision I ever made. He brings so much joy and love into our home!',
-          image: 'https://via.placeholder.com/800x400' // URL of the image for testimonial 1
+          image: happy1 
         },
         {
           name: 'Jane Smith',
           text: 'We found our perfect match at pAwDOPT. Our adopted pet has become a cherished member of our family, bringing laughter and happiness every day.',
-          image: 'https://via.placeholder.com/800x400' // URL of the image for testimonial 2
+          image: happy2
         },
         {
           name: 'Michael Brown',
           text: 'Our adopted pet from pAwDOPT has filled our lives with endless cuddles and unconditional love. We can’t imagine life without him!',
-          image: 'https://via.placeholder.com/800x400' // URL of the image for testimonial 3
+          image: happy3
         },
       ];
 
@@ -28,7 +32,7 @@ function Carousell() {
   };
 
   return (
-    <div className="w-full md:w-2/3 border-zinc-600 border-2 rounded-lg p-6 mx-auto">
+    <div className=" w-full md:w-2/3 border-zinc-600 border-2 rounded-lg p-6 mx-auto">
       <Carousel
         showArrows={true}
         showThumbs={false}
@@ -40,7 +44,7 @@ function Carousell() {
       >
         {slides.map((slide, index) => (
           <div key={index}>
-            <img src={slide.image} alt={`Slide ${index + 1}`} />
+            <img className='car' src={slide.image} alt={`Slide ${index + 1}`} />
           </div>
         ))}
       </Carousel>

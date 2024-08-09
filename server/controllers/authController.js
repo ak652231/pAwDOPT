@@ -12,6 +12,10 @@ exports.sendOTP = async (req, res) => {
   const { number } = req.body;
 
   try {
+    console.log('Attempting to send OTP...');
+    console.log('Twilio SID:', process.env.TWILIO_SID ? 'Set' : 'Not set');
+    console.log('Twilio Token:', process.env.TWILIO_TOKEN ? 'Set' : 'Not set');
+    console.log('Twilio Number:', process.env.TWILIO_NUMBER);
     const user = await User.findOne({ number: number });
 
     if (user) {

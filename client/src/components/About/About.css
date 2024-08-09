@@ -24,7 +24,7 @@
 }
 
 p{
-    margin-top: 2rem;
+    margin-top: 1rem;
     color: black;
     font-weight: 700;
     font-size: 1.3rem;
@@ -52,4 +52,7 @@ p{
 }
 .shelter img{
     width: 96rem;
+}
+h5{
+    font-size: 1.15rem;
 }

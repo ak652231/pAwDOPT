@@ -1,11 +1,14 @@
+@import url('https://fonts.googleapis.com/css2?family=Montserrat:ital,wght@0,100..900;1,100..900&family=Moo+Lah+Lah&family=Nunito:ital,wght@0,200..1000;1,200..1000&family=Righteous&family=Source+Serif+4:ital,opsz,wght@0,8..60,200..900;1,8..60,200..900&display=swap');
 .adoption-content {
   padding: 1.25rem;
   transition: width 0.3s ease;
   background-color: var(--color-light-green);
-  min-height: calc(100vh - 60px); 
+  min-height: calc(100vh); 
 }
+
 .adoption-content.chat-open {
   width: 60%;
+  background-color: var(--color-light-green);
 }
 
 .myReq-page-title {
@@ -17,51 +20,85 @@
   font-family: 'Nunito', sans-serif;
 }
 
-.pet-list {
-  display: flex;
-  flex-direction: column;
-  gap: 2rem;
+.cb-bg {
+  background-color: var(--color-light-green);
 }
 
-.pet-card {
+.mypet-list {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 1rem;
+  padding: 2rem;
+  width: 100%;
+  max-width: 75rem; 
+  margin: 0 auto;
+  transition: max-width 0.3s ease;
+}
+
+.chat-open .mypet-list {
+  max-width: 60rem;
+}
+
+.mypet-card {
   display: flex;
   border-radius: 1rem;
   overflow: hidden;
-  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
-  transition: transform 0.3s ease;
+  box-shadow: 0 0.25rem 0.375rem rgba(0, 0, 0, 0.1);
+  transition: transform 0.3s ease, width 0.3s ease;
+  width: 100%;
+  max-width: 75rem; 
+  flex-direction: row;
+  align-items: center;
+  margin-bottom: 1.5rem;
+  max-height: 15rem;
+}
+.mypet-card p{
+  margin-top: 1rem;
+  font-weight: 700;
+}
+.chat-open .mypet-card {
+  max-width: 60rem;
 }
 
-.pet-card:hover {
-  transform: translateY(-5px);
+.mypet-card:hover {
+  transform: translateY(-0.3125rem);
 }
 
-.pet-info {
+.mypet-info {
   flex: 1;
-  padding: 1.5rem;
+  padding: 1rem;
 }
 
-.pet-name {
-  font-size: 1.8rem;
+.mypet-name {
+  font-size: 1.5rem;
   color: var(--color-dark-green);
   margin-bottom: 0.5rem;
   font-family: 'Nunito', sans-serif;
   font-weight: 700;
 }
 
-.pet-breed,
-.pet-age,
-.pet-status {
-  font-size: 1.1rem;
+.mypet-breed,
+.mypet-age,
+.mypet-status {
+  font-size: 1rem;
   color: #333;
   margin-bottom: 0.5rem;
   font-family: 'Nunito', sans-serif;
 }
 
-.pet-image {
-  width: 40%;
+.mypet-image {
+  width: 30%;
+  max-width: 30.375rem;
+  height: 18.375rem; 
+  transition: height 0.3s ease;
 }
 
-.pet-image img {
+.chat-open .mypet-image {
+  height: 15rem;
+}
+
+.mypet-image img {
   width: 100%;
   height: 100%;
   object-fit: cover;
@@ -100,17 +137,28 @@
   background-color: #5047ff;
   color: white;
 }
+
 .adoption-content.chat-open {
-  width: calc(100% - 400px); 
-  margin-right: 400px; 
+  width: 70%;
+  background-color: var(--color-light-green);
 }
+
+.adoption-page {
+  background-color: var(--color-light-green);
+}
+
 @media (max-width: 47.9375rem) {
-  .pet-card {
+  .mypet-list {
+    width: 90%;
+  }
+
+  .mypet-card {
     flex-direction: column;
   }
 
-  .pet-image {
+  .mypet-image {
     width: 100%;
-    height: 200px;
+    height: 12.5rem; 
+    max-width: none;
   }
 }

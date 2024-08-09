@@ -5,7 +5,9 @@ import './UserProfile.css';
 
 function UserProfile() {
     const [user, setUser] = useState(null);
-    const navigate=useNavigate();
+    const [loaded, setLoaded] = useState(false);
+    const navigate = useNavigate();
+
     useEffect(() => {
         const fetchUserProfile = async () => {
             try {
@@ -24,6 +26,7 @@ function UserProfile() {
 
                 const result = await details.json();
                 setUser(result);
+                setLoaded(true);
             } catch (error) {
                 console.error('Error fetching user profile:', error);
             }
@@ -32,10 +35,11 @@ function UserProfile() {
         fetchUserProfile();
     }, []);
 
-    const handleSubmit=()=>{
+    const handleSubmit = () => {
         navigate('/editUser');
     };
-    if (!user) {
+
+    if (!loaded) {
         return <div>Loading...</div>;
     }
 
@@ -55,31 +59,28 @@ function UserProfile() {
                     </div>
 
                     <div className="up-profile-details">
-                        <div className="up-detail-item">
-                            <span className="up-detail-label">Email:</span>
-                            <span className="up-detail-value">{user.email}</span>
-                        </div>
-                        <div className="up-detail-item">
-                            <span className="up-detail-label">Phone:</span>
-                            <span className="up-detail-value">{user.number}</span>
-                        </div>
-                        <div className="up-detail-item">
-                            <span className="up-detail-label">Address:</span>
-                            <span className="up-detail-value">{user.address}</span>
-                        </div>
-                        <div className="up-detail-item">
-                            <span className="up-detail-label">Gender:</span>
-                            <span className="up-detail-value">{user.gender}</span>
-                        </div>
-                        <div className="up-detail-item">
-                            <span className="up-detail-label">Age:</span>
-                            <span className="up-detail-value">{user.age}</span>
-                        </div>
+                        {[
+                            { label: 'Email', value: user.email },
+                            { label: 'Phone', value: user.number },
+                            { label: 'Address', value: user.address },
+                            { label: 'Gender', value: user.gender },
+                            { label: 'Age', value: user.age }
+                        ].map((detail, index) => (
+                            <div 
+                                key={detail.label} 
+                                className="up-detail-item"
+                                style={{ animationDelay: `${index * 0.1}s` }}
+                            >
+                                <span className="up-detail-label">{detail.label}:</span>
+                                <span className="up-detail-value">{detail.value}</span>
+                            </div>
+                        ))}
                     </div>
 
-                    <button className="up-edit-profile-button nuni" onClick={() => handleSubmit()}>Edit Profile</button>
+                    <button className="up-edit-profile-button nuni" onClick={handleSubmit}>
+                        Edit Profile
+                    </button>
                 </div>
-
             </div>
         </div>
     );

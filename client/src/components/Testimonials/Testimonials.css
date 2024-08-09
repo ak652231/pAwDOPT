@@ -18,19 +18,16 @@
     overflow: hidden;
 }
 
-/* Carousel slide */
 .carousel .slide {
     background: #024023;
     padding: 2rem;
 }
 
-/* Carousel image */
 .carousel .slide img {
     border-radius: 8px;
     box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
 }
 
-/* Testimonial text container */
 .testimonial-text {
     background-color: #024023;
     padding: 2rem;
@@ -38,26 +35,22 @@
     text-align: center;
 }
 
-/* Testimonial name */
 .testimonial-name {
     font-size: 1.5rem;
     font-weight: 700;
-    color: #52d344; /* Using your clr-brown */
+    color: #52d344;
     margin-bottom: 0.5rem;
 }
-
-/* Testimonial content */
 .testimonial-content {
     font-size: 1.1rem;
-    color: #badfb6; /* Using your clr-grey */
+    color: #badfb6; 
     line-height: 1.6;
     font-style: italic;
     margin: 1rem;
 }
 
-/* Carousel controls */
 .carousel .control-arrow {
-    background-color: rgba(2, 64, 35, 0.6) !important; /* Semi-transparent bg-dgrn */
+    background-color: rgba(2, 64, 35, 0.6) !important; 
     opacity: 1 !important;
     transition: all 0.3s ease;
 }
@@ -67,24 +60,27 @@
 }
 
 .carousel .control-prev.control-arrow:before {
-    border-right-color: #a3f79d; /* Using your lgrn color */
+    border-right-color: #a3f79d; 
 }
 
 .carousel .control-next.control-arrow:before {
-    border-left-color: #a3f79d; /* Using your lgrn color */
+    border-left-color: #a3f79d; 
 }
-
-/* Carousel indicators */
 .carousel .control-dots .dot {
-    background: #badfb6 !important; /* Using your bg-dgrn color */
+    background: #badfb6 !important; 
     opacity: 0.4;
 }
 
 .carousel .control-dots .dot.selected {
     opacity: 1;
 }
-
-/* Responsive adjustments */
+.car {
+    width: 100%;
+    height: 23rem;
+    object-fit: cover;
+    aspect-ratio: 16/9; 
+  }
+  
 @media (max-width: 768px) {
     .testi {
         padding: 5% 5%;

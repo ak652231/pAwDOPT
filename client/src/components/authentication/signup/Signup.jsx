@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
-import { Link } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
 import './Signup.css';
+import EventMessage from '../../EventMessage/EventMessage';
 
 function Signup() {
   const [formData, setFormData] = useState({
@@ -17,6 +18,8 @@ function Signup() {
   const [submitting, setSubmitting] = useState(false);
   const [otpSent, setOtpSent] = useState(false);
   const [otpVerified, setOtpVerified] = useState(false);
+  const [showSuccessModal, setShowSuccessModal] = useState(false);
+  const navigate = useNavigate();
 
   const handleInputChange = (e) => {
     const { name, value } = e.target;
@@ -106,8 +109,7 @@ function Signup() {
 
       if (response.ok) {
         console.log('Signup successful');
-        alert('Account created successfully!');
-        window.location.href = '/login';
+        setShowSuccessModal(true);
       } else {
         console.error('Signup failed');
         alert('Signup failed. Please try again.');
@@ -118,6 +120,11 @@ function Signup() {
     } finally {
       setSubmitting(false);
     }
+  };
+
+  const handleCloseModal = () => {
+    setShowSuccessModal(false);
+    navigate('/login');
   };
 
   return (
@@ -270,6 +277,7 @@ function Signup() {
           <p>Already have an account? <Link to="/login">Log in</Link></p>
         </div>
       </div>
+      <EventMessage isOpen={showSuccessModal} onClose={handleCloseModal}  message={"Your account has been created successfully." } statuss={"Success!"} buttonText={"Continue to Login"}/>
     </div>
   );
 }

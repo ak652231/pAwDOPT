@@ -1,6 +1,5 @@
 import React from 'react';
-import logoImage from '../../assets/logo.png';
-import adoptionProcessImage from '../../assets/shelter.jpg'; // Assume we have this image
+import process from '../../assets/process.png'; 
 import "./ProcessS.css";
 import Navbar from '../../components/Navbar/Navbar';
 
@@ -12,7 +11,7 @@ function ProcessS() {
         <h1 className='nuni page-title'>Our Adoption Process</h1>
         
         <div className='process-image'>
-          <img src={adoptionProcessImage} alt="Happy family adopting a dog" className="rounded-lg" />
+          <img src={process} alt="Happy family adopting a dog" className="rounded-lg" />
         </div>
 
         <div className='process-steps'>

@@ -1,14 +1,61 @@
 import React, { useState, useEffect } from 'react';
 import { useParams, useNavigate } from 'react-router-dom';
 import { jwtDecode } from 'jwt-decode';
+import { animated, useSpring } from 'react-spring';
 import Navbar from '../../components/Navbar/Navbar';
+import EventMessage from '.././EventMessage/EventMessage';
 import './AdoptionRequestDetails.css';
+
+const REJECT = "Adoption request rejected.";
+const ACCEPT_ADMIN = "Adoption request approved.";
+const ACCEPT_WORKER = "Adoption request approved and forwarded to admin for further process.";
+
+const useIntersectionObserver = (threshold = 0.1) => {
+  const [isVisible, setIsVisible] = useState(false);
+  const [ref, setRef] = useState(null);
+
+  const animation = useSpring({
+    opacity: isVisible ? 1 : 0,
+    transform: isVisible ? 'translateY(0px)' : 'translateY(50px)',
+    config: { mass: 1, tension: 80, friction: 26 },
+  });
+
+  useEffect(() => {
+    const observer = new IntersectionObserver(
+      ([entry]) => {
+        if (entry.isIntersecting) {
+          setIsVisible(true);
+          observer.unobserve(entry.target);
+        }
+      },
+      { threshold }
+    );
+
+    if (ref) {
+      observer.observe(ref);
+    }
+
+    return () => {
+      if (ref) {
+        observer.unobserve(ref);
+      }
+    };
+  }, [ref, threshold]);
+
+  return [setRef, animation];
+};
 
 function AdoptionRequestDetails() {
   const [requestDetails, setRequestDetails] = useState(null);
   const { id } = useParams();
   const [isNGOWorker, setIsNGOWorker] = useState(false);
+  const [eventMessage, setEventMessage] = useState({ message: '', status: '', isOpen: false });
   const navigate = useNavigate();
+
+  const [petDetailsRef, petDetailsAnimation] = useIntersectionObserver();
+  const [userDetailsRef, userDetailsAnimation] = useIntersectionObserver();
+  const [questionnaireRef, questionnaireAnimation] = useIntersectionObserver();
+  const [buttonsRef, buttonsAnimation] = useIntersectionObserver();
 
   useEffect(() => {
     const token = localStorage.getItem('token');
@@ -64,8 +111,7 @@ function AdoptionRequestDetails() {
       });
 
       if (response.ok) {
-        alert(`Adoption request approved by ${isNGOWorker ? 'NGO worker' : 'Admin'}`);
-        navigate('/adoption-requests');
+        setEventMessage({ message: isNGOWorker ? ACCEPT_WORKER : ACCEPT_ADMIN, status: 'Accepted', isOpen: true });
       } else {
         console.error('Failed to approve adoption request');
         alert('Failed to approve adoption request');
@@ -93,8 +139,7 @@ function AdoptionRequestDetails() {
       });
 
       if (response.ok) {
-        alert('Adoption request rejected');
-        navigate('/adoption-requests');
+        setEventMessage({ message: REJECT, status: 'Rejected', isOpen: true });
       } else {
         console.error('Failed to reject adoption request');
         alert('Failed to reject adoption request');
@@ -103,6 +148,11 @@ function AdoptionRequestDetails() {
       console.error('Error rejecting request:', error);
       alert('An error occurred while rejecting the request');
     }
+  };
+
+  const handleCloseMessage = () => {
+    setEventMessage({ ...eventMessage, isOpen: false });
+    navigate('/adoption-requests');
   };
 
   if (!requestDetails) {
@@ -119,7 +169,7 @@ function AdoptionRequestDetails() {
       <div className="details-content">
         <h1 className="page-title">Adoption Request Details</h1>
         
-        <section className="pet-details">
+        <animated.section ref={petDetailsRef} style={petDetailsAnimation} className="pet-details">
           <h2>Pet Details</h2>
           <div className="pet-info">
             <div className="pet-text">
@@ -137,9 +187,9 @@ function AdoptionRequestDetails() {
               <img src={requestDetails.petId.photos[0]} alt={requestDetails.petId.name} className="pet-image" />
             )}
           </div>
-        </section>
+        </animated.section>
 
-        <section className="user-details">
+        <animated.section ref={userDetailsRef} style={userDetailsAnimation} className="user-details">
           <h2>Requester Details</h2>
           {requestDetails.userId && (
             <>
@@ -148,9 +198,9 @@ function AdoptionRequestDetails() {
               <p><strong>Number:</strong> {requestDetails.userId.number}</p>
             </>
           )}
-        </section>
+        </animated.section>
 
-        <section className="questionnaire">
+        <animated.section ref={questionnaireRef} style={questionnaireAnimation} className="questionnaire">
           <h2>Questionnaire Answers</h2>
           <div className="question-answers">
             {displayFields.map(([question, answer]) => (
@@ -160,12 +210,20 @@ function AdoptionRequestDetails() {
               </div>
             ))}
           </div>
-        </section>
+        </animated.section>
+
         <div className="action-buttons">
-          <button className="approve-btn" onClick={handleApprove}>Approve</button>
-          <button className="reject-btn" onClick={handleReject}>Reject</button>
-        </div>
+  <button className="approve-btn" onClick={handleApprove}>Approve</button>
+  <button className="reject-btn" onClick={handleReject}>Reject</button>
+</div>
       </div>
+      <EventMessage 
+        isOpen={eventMessage.isOpen} 
+        onClose={handleCloseMessage}
+        message={eventMessage.message}
+        statuss={eventMessage.status}
+        buttonText={eventMessage.status === 'Success!' ? 'Home' : 'Close'}
+      />
     </div>
   );
 }

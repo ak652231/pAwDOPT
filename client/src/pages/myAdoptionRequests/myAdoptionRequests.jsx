@@ -1,7 +1,52 @@
 import React, { useState, useEffect } from 'react';
 import Navbar from '../../components/Navbar/Navbar';
 import ChatBox from '../../components/ChatBox/ChatBox';
+import { useSpring, animated } from 'react-spring';
+import { useInView } from 'react-intersection-observer';
 import './myAdoptionRequests.css';
+
+const getStatusInfo = (request) => {
+  if (request.rejected) return { text: 'Rejected', class: 'status-rejected' };
+  if (request.adminApproved) return { text: 'Approved', class: 'status-approved' };
+  if (request.ngoWorkerApproved) return { text: 'Request reviewed, we will contact you for further process', class: 'status-reviewed' };
+  return { text: 'Pending', class: 'status-pending' };
+};
+
+const RequestCard = ({ request, onChatClick }) => {
+  const [ref, inView] = useInView({
+    triggerOnce: true,
+    threshold: 0.1,
+  });
+
+  const animation = useSpring({
+    opacity: inView ? 1 : 0,
+    transform: inView ? 'translateY(0)' : 'translateY(50px)',
+    config: { tension: 400, friction: 15 },
+  });
+
+  const statusInfo = getStatusInfo(request);
+
+  return (
+    <animated.div ref={ref} style={animation} className={`mypet-card ${statusInfo.class}`}>
+      <div className="mypet-info">
+        <h2 className="mypet-name">{request.petId.name}</h2>
+        <p className="mypet-breed">{request.petId.type} - {request.petId.breed}</p>
+        <p className="mypet-age">Age: {request.petId.age}</p>
+        <p className="mypet-status">Status: {statusInfo.text}</p>
+        {request.adminApproved && (
+          <button className="chat-button" onClick={() => onChatClick(request)}>
+            Chat with us
+          </button>
+        )}
+      </div>
+      <div className="mypet-image">
+        {request.petId.photos && request.petId.photos.length > 0 && (
+          <img src={request.petId.photos[0]} alt={`${request.petId.name}`} />
+        )}
+      </div>
+    </animated.div>
+  );
+};
 
 function MyAdoptionRequests() {
   const [myRequests, setMyRequests] = useState([]);
@@ -34,13 +79,6 @@ function MyAdoptionRequests() {
     }
   };
 
-  const getStatusInfo = (request) => {
-    if (request.rejected) return { text: 'Rejected', class: 'status-rejected' };
-    if (request.adminApproved) return { text: 'Approved', class: 'status-approved' };
-    if (request.ngoWorkerApproved) return { text: 'Request reviewed, we will contact you for further process', class: 'status-reviewed' };
-    return { text: 'Pending', class: 'status-pending' };
-  };
-
   const handleChatClick = (request) => {
     setSelectedRequest(request);
     setShowChat(true);
@@ -57,34 +95,20 @@ function MyAdoptionRequests() {
         <Navbar />
         <h1 className="myReq-page-title">Your Adoption Requests</h1>
 
-        <div className="pet-list">
-          {myRequests.map(request => {
-            const statusInfo = getStatusInfo(request);
-            return (
-              <div key={request._id} className={`pet-card ${statusInfo.class}`}>
-                <div className="pet-info">
-                  <h2 className="pet-name">{request.petId.name}</h2>
-                  <p className="pet-breed">{request.petId.type} - {request.petId.breed}</p>
-                  <p className="pet-age">Age: {request.petId.age}</p>
-                  <p className="pet-status">Status: {statusInfo.text}</p>
-                  {request.adminApproved && (
-                    <button className="chat-button" onClick={() => handleChatClick(request)}>
-                      Chat with us
-                    </button>
-                  )}
-                </div>
-                <div className="pet-image">
-                  {request.petId.photos && request.petId.photos.length > 0 && (
-                    <img src={request.petId.photos[0]} alt={`${request.petId.name}`} />
-                  )}
-                </div>
-              </div>
-            );
-          })}
+        <div className="mypet-list">
+          {myRequests.map(request => (
+            <RequestCard
+              key={request._id}
+              request={request}
+              onChatClick={handleChatClick}
+            />
+          ))}
         </div>
       </div>
       {showChat && selectedRequest && (
-        <ChatBox request={selectedRequest} onClose={closeChat} />
+        <div className='cb-bg'>
+          <ChatBox request={selectedRequest} onClose={closeChat} />
+        </div>
       )}
     </div>
   );

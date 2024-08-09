@@ -1,6 +1,6 @@
-import React, { useState,useEffect } from 'react';
+import React, { useState, useEffect } from 'react';
 import { jwtDecode } from 'jwt-decode';
-import { Link, useNavigate} from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
 import logoImage from '../../assets/logo.png';
 import profile from '../../assets/profile.png';
 import './Navbar.css';
@@ -19,7 +19,7 @@ function Navbar() {
       const user = decodedToken.user;
       if (user && (user.email.endsWith('@ngo.com') || user.role === 'ngo_worker')) {
         setIsNGOWorker(true);
-      }else if (user && (user.email.endsWith('@ngoAdmin.com') || user.role === 'ngo_admin')) {
+      } else if (user && (user.email.endsWith('@ngoAdmin.com') || user.role === 'ngo_admin')) {
         setIsNGOAdmin(true);
       }
     }
@@ -40,40 +40,40 @@ function Navbar() {
         <img src={logoImage} alt="Logo" className="logo" />
         <span className="logo-text clr-lgrn text-lg">pAwDOPT</span>
       </div>
-      {(!isNGOWorker && !isNGOAdmin)?  
+      {(!isNGOWorker && !isNGOAdmin) ?
         <div className="navbar-center">
-        <ul className="nav-links">
-          <li><Link className="font-medium text-md clr-lgrn nuni" to="/">Home</Link></li>
-          <li><Link className="font-medium text-md clr-lgrn nuni" to="/about">About</Link></li>
-          <li><Link className="font-medium text-md clr-lgrn nuni" to="/adopt">Adopt</Link></li>
-          <li><Link className="font-medium text-md clr-lgrn nuni" to="/volunteer">Volunteer</Link></li>
-          <li><Link className="font-medium text-md clr-lgrn nuni" to="/donate">Donate</Link></li>
-        </ul>
-      </div>:
-      <div className="navbar-center">
-      <ul className="nav-links">
-        <li><Link className="font-medium text-md clr-lgrn nuni" to="/homengo">Dashboard</Link></li>
-        <li><Link className="font-medium text-md clr-lgrn nuni" to="/adoption-requests">Adoption Requests</Link></li>
-        {isNGOAdmin? 
-          <>
-            <li><Link className="font-medium text-md clr-lgrn nuni" to="/volunteer-requests">Volunteer Requests</Link></li>
-            <li><Link className="font-medium text-md clr-lgrn nuni" to="/manage-pets">Workers</Link></li>
-          </>
-          
-        :
-        <li><Link className="font-medium text-md clr-lgrn nuni" to="/manage-pets">Manage Pets</Link></li>}
-      </ul>
-    </div>
+          <ul className="nav-links">
+            <li><Link className="font-medium text-md clr-lgrn nuni" to="/">Home</Link></li>
+            <li><Link className="font-medium text-md clr-lgrn nuni" to="/about">About</Link></li>
+            <li><Link className="font-medium text-md clr-lgrn nuni" to="/adopt">Adopt</Link></li>
+            <li><Link className="font-medium text-md clr-lgrn nuni" to="/volunteer">Volunteer</Link></li>
+            <li><Link className="font-medium text-md clr-lgrn nuni" to="/donate">Donate</Link></li>
+          </ul>
+        </div> :
+        <div className="navbar-center">
+          <ul className="nav-links">
+            <li><Link className="font-medium text-md clr-lgrn nuni" to="/homengo">Dashboard</Link></li>
+            <li><Link className="font-medium text-md clr-lgrn nuni" to="/adoption-requests">Adoption Requests</Link></li>
+            {isNGOAdmin ?
+              <>
+                <li><Link className="font-medium text-md clr-lgrn nuni" to="/volunteer-requests">Volunteer Requests</Link></li>
+                <li><Link className="font-medium text-md clr-lgrn nuni" to="/manage-pets">Workers</Link></li>
+              </>
+
+              :
+              <li><Link className="font-medium text-md clr-lgrn nuni" to="/manage-pets">Manage Pets</Link></li>}
+          </ul>
+        </div>
       }
-      
+
       <div className="navbar-right">
         {!token ? (
           <>
-            <Link to="/signup">
-              <button className="auth sign-up-btn clr-lgrn mr-2.5 font-bold text-md w-28 nuni">Sign Up</button>
+            <Link to="/signup" className="mr-2.5">
+              <button className="auth sign-up-btn clr-lgrn font-bold text-md nuni">Sign Up</button>
             </Link>
             <Link to="/login">
-              <button className="auth log-in-btn px-3 py-1 rounded text-md w-28 bg-lgrn clr-dgrn font-bold nuni">Log In</button>
+              <button className="auth log-in-btn nuni">Log In</button>
             </Link>
           </>
         ) : (
@@ -87,7 +87,7 @@ function Navbar() {
                 {!isNGOWorker && !isNGOAdmin && (
                   <Link to="/myReq" className="dropdown-item">Your Requests</Link>
                 )}
-                
+
                 <Link onClick={handleLogout} to="/" className="dropdown-item logout">Log Out</Link>
               </div>
             )}

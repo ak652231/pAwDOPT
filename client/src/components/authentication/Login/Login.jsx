@@ -5,24 +5,21 @@ import './Login.css';
 function Login() {
   const [formData, setFormData] = useState({
     email: '',
-    number: '',
     password: ''
   });
 
   const [submitting, setSubmitting] = useState(false);
+  const [errorMessage, setErrorMessage] = useState('');
 
   const handleInputChange = (e) => {
     const { name, value } = e.target;
     setFormData({ ...formData, [name]: value });
   };
 
-  const handlePhoneChange = (value) => {
-    setFormData({ ...formData, number: value });
-  };
-
   const handleSubmit = async (e) => {
     e.preventDefault();
     setSubmitting(true);
+    setErrorMessage('');
 
     const url = 'http://localhost:5000/api/auth/login';
 
@@ -32,16 +29,13 @@ function Login() {
         headers: {
           'Content-Type': 'application/json',
         },
-        body: JSON.stringify({
-          ...formData,
-        }),
+        body: JSON.stringify(formData),
       });
 
       if (response.ok) {
         const data = await response.json();
         localStorage.setItem('token', data.token);
         console.log('Login successful');
-        alert('Login successful');
         if (formData.email.endsWith('@ngo.com') || formData.email.endsWith('@ngoAdmin.com')) {
           window.location.href = '/homengo';
         } else {
@@ -49,11 +43,11 @@ function Login() {
         }
       } else {
         console.error('Login failed');
-        alert('Login failed. Please check your credentials.');
+        setErrorMessage('Invalid email or password. Please try again.');
       }
     } catch (error) {
       console.error('Error logging in:', error);
-      alert('An error occurred. Please try again later.');
+      setErrorMessage('An error occurred. Please try again later.');
     } finally {
       setSubmitting(false);
     }
@@ -88,6 +82,7 @@ function Login() {
               required
             />
           </div>
+          {errorMessage && <div className="error-message">{errorMessage}</div>}
           <button type="submit" className="login-button" disabled={submitting}>
             {submitting ? 'Logging in...' : 'Log In'}
           </button>

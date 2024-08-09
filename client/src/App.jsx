@@ -8,7 +8,6 @@ import Signup from './components/authentication/Signup/Signup';
 import Login from './components/authentication/Login/Login';
 import Logout from './components/authentication/Logout/Logout';
 import ProcessS from './pages/ProcessS/ProcessS';
-import Adopt from './pages/Adopt/Adopt';
 import PetDetails from './pages/PetDetails/PetDetails';
 import AdForm from './pages/Forms/AdForm';
 import HomeNGO from './pages/HomeNGO/HomeNGO';

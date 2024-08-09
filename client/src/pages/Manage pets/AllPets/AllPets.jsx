@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useRef } from 'react';
 import { jwtDecode } from 'jwt-decode';
 import { useNavigate } from 'react-router-dom';
 import Navbar from '../../../components/Navbar/Navbar';
@@ -8,10 +8,24 @@ function AllPets() {
   const [pets, setPets] = useState([]);
   const [selectedType, setSelectedType] = useState('All');
   const [selectedBreed, setSelectedBreed] = useState('All');
-  const [availableBreeds, setAvailableBreeds] = useState([]);
-  const [activeDropdown, setActiveDropdown] = useState(null);
+  const [availableBreeds, setAvailableBreeds] = useState(['All']);
   const navigate = useNavigate();
   const [isNGOWorker, setIsNGOWorker] = useState(false);
+  const [activeDropdown, setActiveDropdown] = useState(null);
+  const [expandedCardId, setExpandedCardId] = useState(null);
+  const [animatingCards, setAnimatingCards] = useState([]);
+  const timeoutRef = useRef(null);
+
+  const handleViewDetails = (id) => {
+    setExpandedCardId(id);
+    setTimeout(() => {
+      navigate(`/adopt/${id}`);
+    }, 500); 
+  };
+
+  const toggleDropdown = (id) => {
+    setActiveDropdown(activeDropdown === id ? null : id);
+  };
 
   useEffect(() => {
     const token = localStorage.getItem('token');
@@ -60,9 +74,25 @@ function AllPets() {
     (selectedBreed === 'All' || pet.breed === selectedBreed)
   );
 
-  const handleViewDetails = (id) => {
-    navigate(`/adopt/${id}`);
-  };
+  useEffect(() => {
+    if (timeoutRef.current) {
+      clearTimeout(timeoutRef.current);
+    }
+
+    setAnimatingCards([]);
+
+    const filteredPetIds = filteredPets.map(pet => pet._id);
+    
+    timeoutRef.current = setTimeout(() => {
+      setAnimatingCards(filteredPetIds);
+    }, 50);
+
+    return () => {
+      if (timeoutRef.current) {
+        clearTimeout(timeoutRef.current);
+      }
+    };
+  }, [selectedType, selectedBreed, pets]);
 
   const handleEditPet = (id) => {
     navigate(`/manage-pets/edit/${id}`);
@@ -90,27 +120,23 @@ function AllPets() {
     }
   };
 
-  const toggleDropdown = (id) => {
-    setActiveDropdown(activeDropdown === id ? null : id);
-  };
-
   const getImageSrc = (base64Image) => {
     return base64Image ? `data:image/png;base64,${base64Image}` : 'path/to/placeholder/image.png';
   };
 
   return (
-    <div className="adoption-page">
+    <div className="ap-page">
       <Navbar />
-      <div className="adoption-content">
-        <h1 className="allpets-page-title">Manage Adoptable Pets</h1>
-        
-        <div className="filter-sections">
-          <div className="filter-controls">
-            <div className="filter-group">
-              <label htmlFor="pet-type" className="filter-label">Animal Type:</label>
-              <select 
-                id="pet-type" 
-                className="filter-select"
+      <div className="ap-content">
+        <h1 className="ap-title">Manage Adoptable Pets</h1>
+
+        <div className="ap-filter-container">
+          <div className="ap-filter-group">
+            <div className="ap-filter-item">
+              <label htmlFor="pet-type" className="ap-filter-label">Animal Type:</label>
+              <select
+                id="pet-type"
+                className="ap-filter-select"
                 value={selectedType}
                 onChange={(e) => setSelectedType(e.target.value)}
               >
@@ -120,11 +146,11 @@ function AllPets() {
               </select>
             </div>
 
-            <div className="filter-group">
-              <label htmlFor="pet-breed" className="filter-label">Breed:</label>
-              <select 
-                id="pet-breed" 
-                className="filter-select"
+            <div className="ap-filter-item">
+              <label htmlFor="pet-breed" className="ap-filter-label">Breed:</label>
+              <select
+                id="pet-breed"
+                className="ap-filter-select"
                 value={selectedBreed}
                 onChange={(e) => setSelectedBreed(e.target.value)}
               >
@@ -135,38 +161,63 @@ function AllPets() {
             </div>
           </div>
           {isNGOWorker && (
-            <button className="add-pet-button" onClick={() => navigate('/manage-pets/add-pet')}>Add Pet +</button>
+            <button className="ap-add-btn" onClick={() => navigate('/manage-pets/add-pet')}>Add Pet +</button>
           )}
-          
         </div>
 
-        <div className="pet-list">
-          {filteredPets.map(pet => (
-            <div key={pet._id} className="pet-card">
-              <div className="pet-info">
-                <h2 className="pet-name">{pet.name}</h2>
-                <p className="pet-breed">{pet.type} - {pet.breed}</p>
-                <p className="pet-age">Age: {pet.age} years</p>
-                <button className="adopt-button" onClick={() => handleViewDetails(pet._id)}>
-                  View Details
-                </button>
-              </div>
-              <div className="pet-image">
-                {pet.photos && pet.photos.length > 0 && (
-                  <img  src={getImageSrc(pet.photos[0].data)} alt={pet.name} />
-                )}
-                {isNGOWorker && (
-                  <div className="pet-actions">
-                  <button className="action-button" onClick={() => toggleDropdown(pet._id)}>⋮</button>
-                  {activeDropdown === pet._id && (
-                    <div className="action-dropdown">
-                      <button onClick={() => handleEditPet(pet._id)}>Edit Pet Details</button>
-                      <button onClick={() => handleDeletePet(pet._id)}>Delete This Pet</button>
+        <div className="ap-grid">
+          {filteredPets.map((pet, index) => (
+            <div 
+              key={pet._id} 
+              className={`ap-card-container ${
+                animatingCards.includes(pet._id) ? 'animate' : ''
+              }`}
+              style={{ animationDelay: `${index * 100}ms` }}
+            >
+              <div 
+                className={`ap-card ${expandedCardId === pet._id ? 'expanded' : ''}`}
+              >
+                <div className="ap-card-header">
+                  {pet.photos && pet.photos[0] && (
+                    <img src={getImageSrc(pet.photos[0].data)} alt={pet.name} className="ap-card-img" />
+                  )}
+                  <div className="ap-card-overlay">
+                    <h1 className="ap-card-title">{pet.name}</h1>
+                  </div>
+                </div>
+                <div className="ap-card-body">
+                  <div className="ap-card-detail">
+                    <strong className="ap-detail-label">Type:</strong>
+                    <p className="ap-detail-value">{pet.type}</p>
+                  </div>
+                  <div className="ap-card-detail">
+                    <strong className="ap-detail-label">Breed:</strong>
+                    <p className="ap-detail-value">{pet.breed}</p>
+                  </div>
+                  <div className="ap-card-detail">
+                    <strong className="ap-detail-label">Age:</strong>
+                    <p className="ap-detail-value">{pet.age} years</p>
+                  </div>
+                  <button 
+                    className="ap-action-btn" 
+                    onClick={() => handleViewDetails(pet._id)}
+                    disabled={expandedCardId !== null}
+                  >
+                    Learn more
+                  </button>
+                  
+                  {isNGOWorker && (
+                    <div className="ap-pet-actions">
+                      <button className="ap-dropdown-toggle" onClick={() => toggleDropdown(pet._id)}>⋮</button>
+                      {activeDropdown === pet._id && (
+                        <div className="ap-action-dropdown">
+                          <button onClick={() => handleEditPet(pet._id)}>Edit Pet Details</button>
+                          <button onClick={() => handleDeletePet(pet._id)}>Delete This Pet</button>
+                        </div>
+                      )}
                     </div>
                   )}
                 </div>
-                )}
-                
               </div>
             </div>
           ))}
