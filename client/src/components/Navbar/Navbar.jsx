@@ -57,7 +57,7 @@ function Navbar() {
             {isNGOAdmin ?
               <>
                 <li><Link className="font-medium text-md clr-lgrn nuni" to="/volunteer-requests">Volunteer Requests</Link></li>
-                <li><Link className="font-medium text-md clr-lgrn nuni" to="/manage-pets">Workers</Link></li>
+                <li><Link className="font-medium text-md clr-lgrn nuni" to="/manage-workers">Workers</Link></li>
               </>
 
               :

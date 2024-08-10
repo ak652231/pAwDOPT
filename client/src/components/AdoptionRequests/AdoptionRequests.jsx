@@ -11,6 +11,29 @@ function AdoptionRequests() {
   const navigate = useNavigate();
   const [isNGOWorker, setIsNGOWorker] = useState(false);
 
+  const getImageSrc = (imageData) => {
+    // console.log('Raw image data:', imageData);
+
+    if (!imageData || !imageData.data) {
+      console.warn('Image data is missing or incorrectly formatted');
+      return 'path/to/placeholder/image.png';
+    }
+
+    try {
+      if (typeof imageData.data === 'object' && imageData.data.type === 'Buffer' && Array.isArray(imageData.data.data)) {
+        const uint8Array = new Uint8Array(imageData.data.data);
+        const base64String = btoa(String.fromCharCode.apply(null, uint8Array));
+        return `data:${imageData.contentType};base64,${base64String}`;
+      }
+      
+      console.warn('Unrecognized image data format');
+      return 'path/to/placeholder/image.png';
+    } catch (error) {
+      console.error('Error generating image src:', error);
+      return 'path/to/placeholder/image.png';
+    }
+  };
+
   const fetchAdoptionRequests = useCallback(async () => {
     setIsLoading(true);
     try {
@@ -31,17 +54,21 @@ function AdoptionRequests() {
       });
 
       if (!response.ok) {
+        const error = await response.text();
+        console.error('Server Error:', error);
         throw new Error('Failed to fetch adoption requests');
       }
 
       const adoptionData = await response.json();
-      console.log('Adoption Data:', adoptionData);
+      
+      // console.log('Fetched adoption data:', JSON.stringify(adoptionData, (key, value) =>
+      //   typeof value === 'bigint' ? value.toString() : value
+      // ));
 
       const filteredData = isNGOWorker 
         ? adoptionData.filter(request => !request.ngoWorkerApproved && !request.adminApproved && !request.rejected && request.assignedWorker._id === userId)
         : adoptionData.filter(request => request.ngoWorkerApproved && !request.adminApproved && !request.rejected);
 
-      console.log('Filtered Data:', filteredData);
       setAdoptionRequests(filteredData);
 
     } catch (error) {
@@ -70,11 +97,6 @@ function AdoptionRequests() {
     navigate(`/adoption-requests/${requestId}`);
   };
 
-  const getImageSrc = (base64Image) => {
-    return base64Image ? `data:image/png;base64,${base64Image}` : 'path/to/placeholder/image.png';
-  };
-
-  // Animation variants
   const containerVariants = {
     hidden: { opacity: 0 },
     visible: {
@@ -96,8 +118,6 @@ function AdoptionRequests() {
     }
   };
 
-  console.log('Rendering. isLoading:', isLoading, 'adoptionRequests:', adoptionRequests);
-
   return (
     <div className="adoption-requests-page">
       <Navbar />
@@ -108,11 +128,10 @@ function AdoptionRequests() {
         transition={{ duration: 0.5 }}
       >
         <h1 className="details-page-title">Adoption Requests</h1>
-        
+
         {isLoading ? (
           <p>Loading adoption requests...</p>
-        ) 
-        : (
+        ) : (
           <AnimatePresence>
             <motion.div 
               className="requests-list"
@@ -128,7 +147,18 @@ function AdoptionRequests() {
                 >
                   <div className="pet-image">
                     {request.petId && request.petId.photos && request.petId.photos.length > 0 && (
-                      <img src={getImageSrc(request.petId.photos[0].data)} alt={request.petId.name} />
+                      <>
+                        {/* {console.log('Photo object:', JSON.stringify(request.petId.photos[0]))} */}
+                        <img 
+                          src={getImageSrc(request.petId.photos[0])} 
+                          alt={request.petId.name} 
+                          onError={(e) => {
+                            console.error('Image failed to load:', e);
+                            e.target.onerror = null; 
+                            e.target.src = 'path/to/placeholder/image.png';
+                          }}
+                        />
+                      </>
                     )}
                   </div>
                   <div className="request-info">

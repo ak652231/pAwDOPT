@@ -45,6 +45,29 @@ const useIntersectionObserver = (threshold = 0.1) => {
   return [setRef, animation];
 };
 
+const getImageSrc = (imageData) => {
+  // console.log('Raw image data:', imageData);
+
+  if (!imageData || !imageData.data) {
+    console.warn('Image data is missing or incorrectly formatted');
+    return 'path/to/placeholder/image.png';
+  }
+
+  try {
+    if (typeof imageData.data === 'object' && imageData.data.type === 'Buffer' && Array.isArray(imageData.data.data)) {
+      const uint8Array = new Uint8Array(imageData.data.data);
+      const base64String = btoa(String.fromCharCode.apply(null, uint8Array));
+      return `data:${imageData.contentType};base64,${base64String}`;
+    }
+    
+    console.warn('Unrecognized image data format');
+    return 'path/to/placeholder/image.png';
+  } catch (error) {
+    console.error('Error generating image src:', error);
+    return 'path/to/placeholder/image.png';
+  }
+};
+
 function AdoptionRequestDetails() {
   const [requestDetails, setRequestDetails] = useState(null);
   const { id } = useParams();
@@ -184,7 +207,16 @@ function AdoptionRequestDetails() {
               )}
             </div>
             {requestDetails.petId && requestDetails.petId.photos && requestDetails.petId.photos.length > 0 && (
-              <img src={requestDetails.petId.photos[0]} alt={requestDetails.petId.name} className="pet-image" />
+              <img 
+                src={getImageSrc(requestDetails.petId.photos[0])} 
+                alt={requestDetails.petId.name} 
+                className="pet-image"
+                onError={(e) => {
+                  console.error('Image failed to load:', e);
+                  e.target.onerror = null; 
+                  e.target.src = 'path/to/placeholder/image.png';
+                }}
+              />
             )}
           </div>
         </animated.section>
@@ -213,9 +245,9 @@ function AdoptionRequestDetails() {
         </animated.section>
 
         <div className="action-buttons">
-  <button className="approve-btn" onClick={handleApprove}>Approve</button>
-  <button className="reject-btn" onClick={handleReject}>Reject</button>
-</div>
+          <button className="approve-btn" onClick={handleApprove}>Approve</button>
+          <button className="reject-btn" onClick={handleReject}>Reject</button>
+        </div>
       </div>
       <EventMessage 
         isOpen={eventMessage.isOpen} 
