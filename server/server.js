@@ -16,9 +16,16 @@ const io = socketIo(server, {
 });
 
 connectDB();
+app.use(cors({
+  origin: ['http://localhost:5173', 'https://your-frontend.netlify.app'],
+  methods: ['GET', 'POST', 'PUT', 'DELETE', 'OPTIONS'],
+  credentials: true
+}));
 
-app.use(cors());
+app.options('*', cors()); 
+
 app.use(bodyParser.json());
+
 
 app.use('/api/auth', require('./routes/auth'));
 app.use('/api/pets', require('./routes/pet'));

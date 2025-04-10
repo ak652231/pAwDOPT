@@ -19,6 +19,7 @@
     "react-phone-input-2": "^2.15.1",
     "react-responsive-carousel": "^3.2.23",
     "react-router-dom": "^6.24.1",
+    "react-spring": "^9.7.5",
     "simple-peer": "^9.11.1"
   },
   "devDependencies": {
